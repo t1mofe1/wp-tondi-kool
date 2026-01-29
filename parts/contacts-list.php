@@ -73,7 +73,7 @@ $q = new WP_Query($args);
     <?php if (!$q->have_posts()): ?>
         <p class="empty"><?php echo esc_html__('Ühtegi töötajat ei leitud', 'tondi'); ?></p>
     <?php else: ?>
-        <div class="grid">
+        <div class="contacts-grid">
             <?php while ($q->have_posts()):
                 $q->the_post(); ?>
                 <?php get_template_part('template-parts/workers/person-card', null, ['post_id' => get_the_ID()]); ?>
