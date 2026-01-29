@@ -12,7 +12,7 @@ yarn-debug.log*
 pnpm-debug.log*
 
 # Build caches
-.vite/
+/.vite/
 .cache/
 dist/.DS_Store
 

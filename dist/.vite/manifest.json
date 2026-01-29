@@ -1,0 +1,33 @@
+{
+  "assets/images/Muster_1.svg": {
+    "file": "assets/Muster_1-D36aUrjc.svg",
+    "src": "assets/images/Muster_1.svg"
+  },
+  "assets/images/Muster_2.svg": {
+    "file": "assets/Muster_2-B9Q4gYNL.svg",
+    "src": "assets/images/Muster_2.svg"
+  },
+  "assets/images/Muster_Footer.svg": {
+    "file": "assets/Muster_Footer-DdCJoCye.svg",
+    "src": "assets/images/Muster_Footer.svg"
+  },
+  "assets/images/Muster_Header.svg": {
+    "file": "assets/Muster_Header-CEyD8vQS.svg",
+    "src": "assets/images/Muster_Header.svg"
+  },
+  "assets/js/main.js": {
+    "file": "assets/main-DgWpozpQ.js",
+    "name": "main",
+    "src": "assets/js/main.js",
+    "isEntry": true,
+    "css": [
+      "assets/main-w_U-uNs4.css"
+    ],
+    "assets": [
+      "assets/Muster_Footer-DdCJoCye.svg",
+      "assets/Muster_Header-CEyD8vQS.svg",
+      "assets/Muster_1-D36aUrjc.svg",
+      "assets/Muster_2-B9Q4gYNL.svg"
+    ]
+  }
+}
