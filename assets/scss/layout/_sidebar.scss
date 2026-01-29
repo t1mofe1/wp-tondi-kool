@@ -1,0 +1,89 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sub-sidebar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  max-width: min-content;
+
+  &__title {
+    margin-bottom: $space-2;
+    font-size: $space-8;
+    text-transform: uppercase;
+  }
+
+  &__nav {
+    border-radius: 12px;
+    background-color: #ede6dd;
+    padding: $space-4 $space-6;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: $space-1;
+      text-decoration: none;
+
+      > a {
+        display: block;
+        padding: $space-1 $space-3;
+        border-radius: 999px;
+        white-space: normal;
+        color: var(--wp--preset--color--hall);
+        text-decoration: none;
+        font-size: 1.25rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      &:hover > a,
+      &:focus-within > a {
+        background-color: var(--wp--preset--color--helekollane);
+      }
+
+      &.menu-item-has-children {
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+
+        > a::after {
+          content: '\25BC';
+          font-size: 0.8rem;
+          margin-left: 0.25rem;
+          line-height: 1;
+        }
+      }
+
+      &.current-menu-item > a,
+      &.current-menu-ancestor > a {
+        background-color: var(--wp--preset--color--helekollane);
+      }
+    }
+
+    .sub-menu {
+      display: flex;
+      flex-direction: column;
+
+      gap: $space-1;
+      padding-inline: $space-6;
+    }
+  }
+}
+
+@include mq('<=desktop') {
+  .sub-sidebar {
+    display: none;
+  }
+}

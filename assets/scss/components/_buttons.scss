@@ -1,0 +1,24 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+/* Buttons that rely on focus ring / brand color */
+.wp-element-button,
+.wp-block-button__link,
+button,
+input[type='submit'] {
+  transition: filter 0.15s ease, transform 0.05s ease;
+}
+
+.wp-element-button:hover,
+.wp-block-button__link:hover,
+button:hover,
+input[type='submit']:hover {
+  filter: brightness(0.92);
+}
+
+.wp-element-button:focus-visible,
+.wp-block-button__link:focus-visible,
+button:focus-visible,
+input[type='submit']:focus-visible {
+  @include focus-ring();
+}

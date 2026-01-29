@@ -1,0 +1,446 @@
+<?php get_header(); ?>
+
+<main id="main" class="home" role="main">
+    <div class="container">
+        <section class="home-highlights">
+            <section class="fastlinks">
+                <h2 class="fastlinks-title">Kiirviited</h2>
+
+                <?php
+                wp_nav_menu([
+                    'theme_location' => 'fastlinks',
+                    'container' => 'nav',
+                    'container_class' => 'fastlinks-nav',
+                    'menu_class' => 'fastlinks-menu',
+                    'walker' => new Tondi_Fastlinks_Walker(),
+                ]);
+                ?>
+            </section>
+
+            <section class="news">
+                <h2 class="news-title"><?php esc_html_e('Uudised', 'tondi'); ?></h2>
+
+                <?php
+
+                $news_q = new WP_Query([
+                    'post_type' => 'news',
+                    'posts_per_page' => 3,
+                    'ignore_sticky_posts' => true,
+                    'post_status' => 'publish',
+                ]);
+
+                $news_more_url = get_post_type_archive_link('news');
+
+                ?>
+
+                <?php if ($news_q->have_posts()): ?>
+                    <ul class="news-cards">
+                        <?php while ($news_q->have_posts()):
+                            $news_q->the_post(); ?>
+                            <li <?php post_class('news-card'); ?>>
+                                <h2 class="news-card-title">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </h2>
+
+                                <p class="news-card-excerpt">
+                                    <?php
+                                    if (has_excerpt()) {
+                                        echo esc_html(get_the_excerpt());
+                                    } else {
+                                        echo esc_html(wp_trim_words(wp_strip_all_tags(get_the_content('')), 24));
+                                    }
+                                    ?>
+                                </p>
+
+                                <div class="news-card-image-wrapper">
+                                    <?php
+                                    if (has_post_thumbnail()) {
+                                        the_post_thumbnail('news_card', [
+                                            'alt' => the_title_attribute(['echo' => false]),
+                                            'loading' => 'lazy',
+                                            'decoding' => 'async',
+                                        ]);
+                                    } else {
+                                        // Optional placeholder image
+                                        echo '<div class="news-card-image-placeholder" aria-hidden="true"></div>';
+                                    }
+                                    ?>
+                                </div>
+
+                                <a class="news-card-more" href="<?php the_permalink(); ?>">
+                                    <?php esc_html_e('Loe edasi...', 'tondi'); ?>
+                                </a>
+                            </li>
+                        <?php endwhile;
+                        wp_reset_postdata(); ?>
+                    </ul>
+
+                    <a class="read-more-news-btn" href="<?php echo esc_url($news_more_url); ?>">
+                        <?php esc_html_e('Loe veel', 'tondi'); ?>
+                    </a>
+                <?php else: ?>
+                    <p class="no-news">
+                        <?php esc_html_e('Uudiseid ei leitud.', 'tondi'); ?>
+                    </p>
+                <?php endif; ?>
+            </section>
+        </section>
+    </div>
+
+    <!-- Decorative border -->
+    <div class="home-border-one" aria-hidden="true"></div>
+
+    <div class="container">
+        <section class="home-calendar-gallery">
+            <?php
+            $events = tondi_get_upcoming_events(4, 300);
+            ?>
+
+            <section class="home-calendar">
+                <h2 class="home-calendar__title">
+                    <?php esc_html_e('Kalender', 'tondi'); ?>
+                </h2>
+
+                <?php if (!empty($events)) : ?>
+                    <ol class="home-calendar__list">
+                        <?php foreach ($events as $index => $event) : ?>
+                            <?php
+
+                            /** @var DateTime $start */
+                            $start = clone($event['start']);
+                            $start->setTimezone(new DateTimeZone('Europe/Tallinn'));
+
+                            $date_attr = $start->format('Y-m-d');
+                            $date_text = $start->format('d.m');
+
+                            $time_attr = $start->format('H:i');
+                            $time_text = $start->format('H:i');
+
+                            $name = $event['summary'] ?? '';
+                            $place = $event['location'] ?? '';
+
+                            ?>
+
+                            <li class="home-calendar__item">
+                                <div class="home-calendar__info">
+                                    <h3 class="home-calendar__name">
+                                        <?php echo esc_html($name); ?>
+                                    </h3>
+
+                                    <?php if ($place): ?>
+                                        <p class="home-calendar__place">
+                                            <?php echo esc_html($place); ?>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="home-calendar__meta">
+                                    <time class="home-calendar__date" datetime="<?php echo esc_attr($date_attr); ?>">
+                                        <?php echo esc_html($date_text); ?>
+                                    </time>
+
+                                    <time class="home-calendar__time" datetime="<?php echo esc_attr($time_attr); ?>">
+                                        <?php echo esc_html($time_text); ?>
+                                    </time>
+                                </div>
+                            </li>
+
+                            <?php if ($index < count($events) - 1) : ?>
+                                <hr class="home-calendar__separator" />
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ol>
+
+                    <!-- <a class="home-events__more_btn" href="#"> -->
+                        <?php // esc_html_e('Vaata kõiki sündmusi', 'tondi'); ?>
+                    <!-- </a> -->
+                <?php else : ?>
+                    <div class="home-calendar__empty">
+                        <strong><?php esc_html_e('Sündmused on tulekul!', 'tondi'); ?></strong>
+                        <p><?php esc_html_e('Uuendame kalendrit peagi.', 'tondi'); ?></p>
+                    </div>
+
+                <?php endif; ?>
+            </section>
+
+            <section class="front-gallery">
+                <h2 class="front-gallery__title">
+                    <?php esc_html_e('Galerii', 'tondi'); ?>
+                </h2>
+
+                <?php
+
+                $folder_id = (int) get_field('front_page_gallery_folder', 'option');
+                $max_slots = (int) get_field('front_page_gallery_limit', 'option') ?: 6;
+                if($max_slots <= 0) {
+                    $max_slots = 6;
+                }
+
+                $attachment_ids = [];
+
+                if($folder_id > 0 && class_exists(\FileBird\Classes\Helpers::class)) {
+                    $attachment_ids = (array) \FileBird\Classes\Helpers::getAttachmentIdsByFolderId($folder_id);
+                    $attachment_ids = array_values(array_filter(array_map('intval', $attachment_ids)));
+                }
+
+                // Randomize and shuffle
+                if ($attachment_ids) {
+                    shuffle($attachment_ids);
+                    $attachment_ids = array_slice($attachment_ids, 0, $max_slots);
+                }
+
+                $found = count($attachment_ids);
+
+                ?>
+
+                <div class="front-gallery__grid">
+                    <?php if (!empty($attachment_ids)): ?>
+                        <?php foreach ($attachment_ids as $att_id):
+                            $full = wp_get_attachment_image_url($att_id, 'full');
+
+                            // Caption preference: attachment caption, fallback to title
+                            $caption = wp_get_attachment_caption($att_id);
+                            if($caption === '') {
+                                $caption = get_the_title($att_id);
+                            }
+
+                            // Alt: stored on attachment
+                            $alt = get_post_meta($att_id, '_wp_attachment_image_alt', true);
+                            if ($alt === '') {
+                                $alt = get_the_title($att_id);
+                            }
+
+                            ?>
+
+                            <button
+                                type="button"
+                                class="front-gallery__item js-gallery-item"
+                                data-full="<?php echo esc_url($full); ?>"
+                                data-caption="<?php echo esc_attr($caption); ?>"
+                            >
+                                <?php
+                                echo wp_get_attachment_image($att_id, 'front_gallery', false, [
+                                    'alt' => $alt,
+                                    'loading' => 'lazy',
+                                    'decoding' => 'async',
+                                ]);
+                                ?>
+                            </button>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <?php
+                    // Placeholders if fewer than max slots items
+                    for ($i = $found; $i < $max_slots; $i++): ?>
+                        <div class="front-gallery__item front-gallery__item--placeholder reveal-on-scroll">
+                            <div class="front-gallery-placeholder-inner"></div>
+                        </div>
+                    <?php endfor; ?>
+                </div>
+
+                <?php $gallery_page = get_page_by_path('galerii'); ?>
+                <?php if ($gallery_page): ?>
+                    <div class="front-gallery__more_wrap">
+                        <a
+                            class="front-gallery__more_btn"
+                            href="<?php echo esc_url($gallery_page ? get_permalink($gallery_page) : home_url('/')); ?>"
+                        >
+                            <?php esc_html_e('Vaata rohkem', 'tondi'); ?>
+                        </a>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Lightbox overlay -->
+                <div class="gallery-lightbox" aria-hidden="true">
+                    <div class="gallery-lightbox__backdrop"></div>
+                    <figure class="gallery-lightbox__content" role="dialog" aria-modal="true" aria-label="Pilt suurelt">
+                        <button type="button" class="gallery-lightbox__close" aria-label="Sulge">&times;</button>
+                        <img src="" alt="" />
+                        <figcaption></figcaption>
+                    </figure>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <!-- Decorative border -->
+    <div class="home-border-two" aria-hidden="true"></div>
+
+    <!-- home-projects -->
+    <div class="container">
+        <section class="home-projects">
+            <h2 class="home-projects__title">
+                <?php esc_html_e('Projektid', 'tondi'); ?>
+            </h2>
+
+            <?php if (!$projects = get_field('projects_columns', 'option')): ?>
+                <p>
+                    <?php esc_html_e('Projekte ei leitud.', 'tondi'); ?>
+                </p>
+            <?php else: ?>
+                <div class="home-projects-grid">
+                    <?php foreach ($projects as $project):
+                        $image_id = $project['image'] ?? 0;
+                        $link = $project['link'] ?? null;
+
+                        if (!$image_id || empty($link['url'])) {
+                            continue;
+                        }
+
+                        $url = $link['url'];
+                        $target = $link['target'] ?? '_self';
+                        $title = $link['title'] ?? '';
+
+                        $alt = $title ?: __('Project', 'tondi');
+
+                        $img_html = wp_get_attachment_image(
+                            $image_id,
+                            'medium_large',
+                            false,
+                            [
+                                'class' => 'home-projects__image',
+                                'alt' => $alt,
+                            ]
+                        );
+                    ?>
+
+                        <article class="home-projects__item">
+                            <a
+                                href="<?php echo esc_url($url); ?>"
+                                class="home-projects__link"
+                                target="<?php echo esc_attr($target); ?>"
+                                <?php echo ($target === '_blank') ? 'rel="noopener"' : ''; ?>
+                            >
+                                <?php echo $img_html; ?>
+                            </a>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    </div>
+
+    <!-- Decorative border -->
+    <div class="home-border-three" aria-hidden="true"></div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Fade-in on scroll ---
+        const revealItems = document.querySelectorAll('.front-gallery__item');
+
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            revealItems.forEach(el => io.observe(el));
+        } else {
+            // Fallback for browsers without IntersectionObserver
+            revealItems.forEach(el => el.classList.add('is-visible'));
+        }
+
+        // --- Lightbox logic ---
+        const items = document.querySelectorAll('.js-gallery-item');
+        const overlay = document.querySelector('.gallery-lightbox');
+        if (!overlay) return;
+
+        const img = overlay.querySelector('img');
+        const caption = overlay.querySelector('figcaption');
+        const closeBtn = overlay.querySelector('.gallery-lightbox__close');
+        const backdrop = overlay.querySelector('.gallery-lightbox__backdrop');
+
+        let lastFocused = null;
+
+        function openLightbox(src, text, origin) {
+            lastFocused = origin || document.activeElement;
+
+            img.src = src;
+            img.alt = text || '';
+            caption.textContent = text || '';
+
+            overlay.classList.add('is-open');
+            overlay.setAttribute('aria-hidden', 'false');
+
+            closeBtn.focus();
+        }
+
+        function closeLightbox() {
+            overlay.classList.remove('is-open');
+            overlay.setAttribute('aria-hidden', 'true');
+
+            img.src = '';
+
+            if (lastFocused && typeof lastFocused.focus === 'function') {
+                lastFocused.focus();
+            }
+        }
+
+        items.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const src = btn.getAttribute('data-full');
+                const text = btn.getAttribute('data-caption') || '';
+
+                if (src) {
+                    openLightbox(src, text, btn);
+                }
+            });
+        });
+
+        closeBtn.addEventListener('click', closeLightbox);
+        backdrop.addEventListener('click', closeLightbox);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+                closeLightbox();
+            }
+        });
+
+        // --- Sidebar menu toggle ---
+        const fastlinksMenu = document.querySelector('.fastlinks-menu');
+        fastlinksMenu.addEventListener('click', function () {
+            const isOpen = fastlinksMenu.classList.contains('open');
+
+            if(isOpen) {
+                fastlinksMenu.classList.remove('open');
+                fastlinksMenu.setAttribute('aria-expanded', 'false');
+
+                const overlay = document.getElementById('fastlinks-overlay');
+                if (overlay) {
+                    document.body.removeChild(overlay);
+                }
+            } else {
+                const overlay = document.createElement('div');
+                overlay.id = 'fastlinks-overlay';
+
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.zIndex = '500';
+                overlay.style.background = 'rgba(0, 0, 0, 0.35)';
+
+                overlay.addEventListener('click', function () {
+                    fastlinksMenu.classList.remove('open');
+                    fastlinksMenu.setAttribute('aria-expanded', 'false');
+                    document.body.removeChild(overlay);
+                });
+
+                document.body.appendChild(overlay);
+
+                fastlinksMenu.classList.add('open');
+                fastlinksMenu.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+</script>
+
+<?php get_footer(); ?>

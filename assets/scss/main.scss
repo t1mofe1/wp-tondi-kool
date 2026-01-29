@@ -1,0 +1,18 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'functions' as *;
+
+@use 'reset';
+@use 'base';
+@use 'layout';
+@use 'components';
+@use 'pages';
+
+body {
+  background-color: #fffaf1;
+}
+
+html.is-modal-open,
+body.is-modal-open {
+  overflow: hidden;
+}

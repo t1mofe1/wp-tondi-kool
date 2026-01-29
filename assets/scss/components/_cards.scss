@@ -1,0 +1,18 @@
+@use '../variables' as *;
+
+.card {
+  border-radius: $space-3;
+  box-shadow: var(
+    --wp--preset--shadow--card-soft,
+    0 1px 3px rgba(0, 0, 0, 0.08)
+  );
+  background: var(--wp--preset--color--liivakarva);
+  padding: 1rem;
+}
+
+// .card__body {
+//   padding: $space-4;
+// }
+// .card h3 {
+//   margin: 0 0 $space-2 0;
+// }

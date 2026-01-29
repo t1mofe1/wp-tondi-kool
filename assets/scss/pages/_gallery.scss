@@ -1,0 +1,21 @@
+@use '../variables' as *;
+
+// .gallery {
+//   @extend .container;
+// }
+
+.gallery .masonry {
+  columns: 4 280px;
+  column-gap: $space-4;
+}
+.gallery .gallery-item {
+  break-inside: avoid;
+  margin-bottom: $space-4;
+}
+
+@media (max-width: 600px) {
+  .gallery .masonry {
+    columns: 2 160px;
+    column-gap: $space-3;
+  }
+}

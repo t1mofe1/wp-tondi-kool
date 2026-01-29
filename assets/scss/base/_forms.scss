@@ -1,0 +1,30 @@
+:root {
+  --focus-ring: var(--wp--preset--color--helekollane);
+}
+
+:where(
+    button,
+    .wp-element-button,
+    .wp-block-button__link,
+    input[type='submit']
+  ) {
+  transition: filter 0.15s ease, transform 0.05s ease;
+
+  &:hover {
+    filter: brightness(0.92);
+  }
+}
+
+:where(
+    button,
+    .wp-element-button,
+    .wp-block-button__link,
+    input[type='submit']
+  ):focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

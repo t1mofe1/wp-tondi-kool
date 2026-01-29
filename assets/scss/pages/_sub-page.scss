@@ -1,0 +1,20 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.sub-page-layout {
+  display: flex;
+  justify-content: center;
+
+  gap: $space-12;
+  margin-block: $space-6;
+
+  .sub-content {
+    flex: 1;
+  }
+
+  // @include mq('<=desktop') {
+  //   flex-direction: column;
+  //   text-align: center;
+  //   gap: $space-6;
+  // }
+}

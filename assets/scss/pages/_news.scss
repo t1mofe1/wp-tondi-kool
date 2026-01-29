@@ -1,0 +1,160 @@
+/* ============================
+   News cards (shared)
+   ============================ */
+
+.news-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  gap: 1.25rem;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  @media (max-width: 980px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 620px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.news-card {
+  margin: 0;
+  padding: 1.25rem;
+
+  border-radius: 1rem;
+  background: var(--wp--preset--color--white);
+
+  border: 1px solid rgba(79, 74, 62, 0.14);
+  box-shadow: 0 1px 2px rgba(79, 74, 62, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.75rem;
+}
+
+.news-card-title {
+  margin: 0;
+  line-height: 1.1;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.news-card-excerpt {
+  margin: 0;
+  line-height: 1.55;
+
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-card-image-wrapper {
+  border-radius: 0.85rem;
+  overflow: hidden;
+  background: rgba(79, 74, 62, 0.06);
+
+  width: 100%;
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 10;
+
+  > * {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+.news-card-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: rgba(79, 74, 62, 0.06);
+}
+
+.news-card-more {
+  margin-top: auto;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.news-archive {
+  padding: 2.5rem 0 3.5rem;
+}
+
+.news-archive__header {
+  margin-bottom: 1.5rem;
+}
+
+.news-archive__title {
+  margin: 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 1.75rem;
+
+  .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0;
+    margin: 0;
+
+    a.page-numbers,
+    span.page-numbers {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 44px;
+      height: 44px;
+      padding: 0 0.9rem;
+
+      border-radius: 0.85rem;
+      text-decoration: none;
+
+      border: 1px solid rgba(79, 74, 62, 0.14);
+      background: var(--wp--preset--color--white);
+    }
+
+    a.page-numbers:hover {
+      text-decoration: underline;
+    }
+
+    span.page-numbers.current {
+      font-weight: 800;
+    }
+
+    /* spacing between pills */
+    .page-numbers + .page-numbers {
+      margin-left: 0.5rem;
+    }
+  }
+}

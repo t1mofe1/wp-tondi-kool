@@ -1,0 +1,23 @@
+{
+  "name": "tondi",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "translate": "npm run translate:pot && npm run translate:update",
+    "translate:pot": "wp i18n make-pot . ./resources/lang/tondi.pot --include=\"theme.json,patterns,app,resources\"",
+    "translate:update": "for file in ./resources/lang/*.po; do wp i18n update-po ./resources/lang/tondi.pot $file; done",
+    "translate:compile": "npm run translate:mo && npm run translate:js",
+    "translate:js": "wp i18n make-json ./resources/lang --pretty-print",
+    "translate:mo": "wp i18n make-mo ./resources/lang ./resources/lang"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "baseline-browser-mapping": "^2.9.14",
+    "postcss": "^8.5.6",
+    "postcss-loader": "^8.2.0",
+    "sass": "^1.93.3",
+    "vite": "^7.1.12",
+    "vite-plugin-mkcert": "^1.17.9"
+  }
+}

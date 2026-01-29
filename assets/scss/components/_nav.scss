@@ -1,0 +1,46 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// .primary-nav {
+//   position: relative;
+
+//   ul {
+//     list-style: none;
+//     display: flex;
+//     gap: $space-6;
+//     margin: 0;
+//     padding: 0;
+
+//     @include mq('<=tablet') {
+//       flex-direction: column;
+//       padding: $space-4;
+//     }
+//   }
+
+//   a {
+//     padding: $space-2 0;
+//     display: block;
+//   }
+
+//   @include mq('<=tablet') {
+//     position: absolute;
+//     top: 100%;
+//     right: 0;
+//     left: 0;
+//     background: #fff;
+//     border-top: 1px solid #eee;
+//     display: none;
+
+//     .is-open {
+//       display: block;
+//     }
+//   }
+// }
+
+// .nav-toggle {
+//   display: inline-flex;
+
+//   @include mq('>tablet') {
+//     display: none;
+//   }
+// }

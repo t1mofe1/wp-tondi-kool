@@ -1,0 +1,219 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.8/theme.json",
+  "version": 3,
+
+  "settings": {
+    "appearanceTools": true,
+
+    "layout": {
+      "contentSize": "1140px",
+      "wideSize": "1280px"
+    },
+    "useRootPaddingAwareAlignments": true,
+
+    "color": {
+      "palette": [
+        { "name": "Meresinine", "slug": "meresinine", "color": "#87AAA3" },
+        { "name": "Helekollane", "slug": "helekollane", "color": "#fee1ac" },
+        { "name": "Hall", "slug": "hall", "color": "#666154" },
+        { "name": "Heleroheline", "slug": "heleroheline", "color": "#BDE4AA" },
+        { "name": "Lõheroosa", "slug": "loheroosa", "color": "#E8A87C" },
+        { "name": "Vanaroosa", "slug": "vanaroosa", "color": "#D79492" },
+        { "name": "Korallroosa", "slug": "korallroosa", "color": "#E27D60" },
+        { "name": "Liivakarva", "slug": "liivakarva", "color": "#F7F2E9" },
+        { "name": "Tumehall", "slug": "tumehall", "color": "#4F4A3E" }
+      ],
+      "defaultPalette": false,
+      "custom": false,
+      "gradients": [
+        {
+          "name": "Vanaroosa -> Korallroosa",
+          "slug": "vanaroosa-korallroosa",
+          "gradient": "linear-gradient(135deg, #D79492 0%, #E27D60 100%)"
+        }
+      ],
+      "defaultGradients": false,
+      "customGradient": true
+    },
+
+    "typography": {
+      "fontFamilies": [
+        {
+          "name": "Quicksand",
+          "slug": "quicksand",
+          "fontFamily": "Quicksand, system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "Quicksand",
+              "fontStyle": "normal",
+              "fontWeight": "300 700",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./assets/fonts/Quicksand/Quicksand-VariableFont_wght.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Quicksand",
+              "fontStyle": "italic",
+              "fontWeight": "300",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./assets/fonts/Quicksand/static/Quicksand-LightItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Quicksand",
+              "fontStyle": "italic",
+              "fontWeight": "400",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./assets/fonts/Quicksand/static/Quicksand-Italic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Quicksand",
+              "fontStyle": "italic",
+              "fontWeight": "500",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./assets/fonts/Quicksand/static/Quicksand-MediumItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Quicksand",
+              "fontStyle": "italic",
+              "fontWeight": "600",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./assets/fonts/Quicksand/static/Quicksand-SemiBoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Quicksand",
+              "fontStyle": "italic",
+              "fontWeight": "700",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./assets/fonts/Quicksand/static/Quicksand-BoldItalic.woff2"
+              ]
+            }
+          ]
+        }
+      ],
+      "fontSizes": [
+        { "name": "XS", "slug": "xs", "size": "0.875rem" },
+        { "name": "S", "slug": "s", "size": "1rem" },
+        { "name": "M", "slug": "m", "size": "1.125rem" },
+        { "name": "L", "slug": "l", "size": "1.375rem" },
+        { "name": "XL", "slug": "xl", "size": "1.75rem" },
+        { "name": "2XL", "slug": "2xl", "size": "2.25rem" },
+        { "name": "3XL", "slug": "3xl", "size": "3rem" }
+      ],
+      "fluid": false,
+      "lineHeight": true,
+      "letterSpacing": true,
+      "textTransform": true
+    },
+
+    "spacing": {
+      "spacingScale": {
+        "steps": 8,
+        "mediumStep": 1
+      },
+      "units": ["px", "em", "rem", "vh", "vw", "%"],
+      "blockGap": true,
+      "margin": true,
+      "padding": true
+    },
+
+    "border": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+
+    "shadow": {
+      "presets": [
+        {
+          "name": "Card Soft",
+          "slug": "card-soft",
+          "shadow": "0 1px 3px rgba(0, 0, 0, .08)"
+        }
+      ]
+    }
+  },
+
+  "styles": {
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--quicksand)",
+      "fontSize": "var(--wp--preset--font-size--m)",
+      "lineHeight": "1.6"
+    },
+
+    "elements": {
+      "heading": {
+        "typography": {
+          "lineHeight": "1.15",
+          "fontWeight": "700",
+          "textTransform": "uppercase",
+          "letterSpacing": "0.02em"
+        }
+      },
+      "link": {
+        "color": {
+          "text": "var(--wp--preset--color--meresinine)"
+        }
+      }
+    },
+
+    "color": {
+      "text": "#666154",
+      "background": "#FFFFFF"
+    },
+
+    "spacing": {
+      "blockGap": "1.5rem"
+    },
+
+    "blocks": {
+      "core/group": {
+        "border": { "radius": "12px" },
+        "color": { "background": "var(--wp--preset--color--liivakarva)" },
+        "shadow": "var(--wp--preset--shadow--card-soft)"
+      },
+
+      "core/cover": {
+        "color": {
+          "background": "var(--wp--preset--color--tumehall)",
+          "text": "#FFFFFF"
+        }
+      },
+
+      "core/navigation": {
+        "typography": { "fontWeight": "600" },
+        "spacing": { "blockGap": "1rem" },
+        "color": { "text": "var(--wp--preset--color--hall)" }
+      },
+      "core/navigation-link": {
+        "typography": { "letterSpacing": "0.02em" }
+      },
+
+      "core/button": {
+        "border": { "radius": "8px" },
+        "color": {
+          "background": "var(--wp--preset--color--meresinine)",
+          "text": "#FFFFFF"
+        },
+        "typography": { "fontWeight": "700" }
+      },
+
+      "core/heading": {
+        "typography": {
+          "textTransform": "uppercase",
+          "fontWeight": "700"
+        }
+      }
+    }
+  }
+}

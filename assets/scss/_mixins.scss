@@ -1,0 +1,23 @@
+@use 'base/include-media' as *;
+@use 'variables' as *;
+
+@mixin mq($conditions...) {
+  @include media($conditions...) {
+    @content;
+  }
+}
+
+@mixin container {
+  max-width: $container;
+  margin-inline: auto;
+  padding-inline: $space-4;
+}
+
+@mixin clamp-type($min, $vw, $max) {
+  font-size: clamp($min, $vw, $max);
+}
+
+@mixin focus-ring($color: $focus-ring) {
+  outline: 2px solid $color;
+  outline-offset: 3px;
+}

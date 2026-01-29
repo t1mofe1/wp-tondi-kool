@@ -1,0 +1,36 @@
+// Colors
+// $brand-50: #f5f8ff;
+// $brand-100: #e6efff;
+$brand-500: var(--wp--preset--color--meresinine) !default;
+$focus-ring: var(--wp--preset--color--helekollane) !default;
+// $brand-700: #2343b2;
+// $ink: #111111;
+// $muted: #666666;
+// $bg: #ffffff;
+// $danger: #e74c3c;
+// $success: #2ecc71;
+
+// Spacing scale (8px baseline)
+$space-1: 0.25rem; // 4
+$space-2: 0.5rem; // 8
+$space-3: 0.75rem; // 12
+$space-4: 1rem; // 16
+$space-6: 1.5rem; // 24
+$space-8: 2rem; // 32
+$space-12: 3rem; // 48
+$space-16: 4rem; // 64
+
+// Container widths
+$container: 1140px !default;
+// $container-narrow: 800px;
+
+// Breakpoints
+$breakpoints: (
+  'phone': 320px,
+  'tablet': 768px,
+  'desktop': 1024px,
+);
+
+:root {
+  --container: #{$container};
+}
