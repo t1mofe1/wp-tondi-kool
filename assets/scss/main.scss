@@ -11,7 +11,7 @@ body {
   background-color: #fffaf1;
 }
 
-html.is-modal-open,
-body.is-modal-open {
+html.lock,
+body.lock {
   overflow: hidden;
 }

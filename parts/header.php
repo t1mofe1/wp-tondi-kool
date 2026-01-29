@@ -59,7 +59,7 @@ $is_front = is_front_page() || is_home();
         btn.addEventListener('click', () => {
             const isOpen = nav.classList.toggle('is-open');
             btn.setAttribute('aria-expanded', String(isOpen));
-            document.body.classList.toggle('menu-open', isOpen);
+            document.body.classList.toggle('lock', isOpen);
         });
     });
 

@@ -48,8 +48,8 @@
     modal.setAttribute('aria-hidden', 'false');
     if (backdrop) backdrop.setAttribute('aria-hidden', 'false');
 
-    document.documentElement.classList.add('is-modal-open');
-    document.body.classList.add('is-modal-open');
+    document.documentElement.classList.add('lock');
+    document.body.classList.add('lock');
 
     closeBtn?.focus?.();
   }
@@ -65,8 +65,8 @@
     modal.setAttribute('aria-hidden', 'true');
     if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
 
-    document.documentElement.classList.remove('is-modal-open');
-    document.body.classList.remove('is-modal-open');
+    document.documentElement.classList.remove('lock');
+    document.body.classList.remove('lock');
 
     setWorkerInUrl(null);
 
