@@ -3,6 +3,7 @@
 
 <head>
     <!-- Developed by Timoteos Mägi (https://www.linkedin.com/in/t1m0fe1/) -->
+    <!-- Version: <?php echo wp_get_theme()->get('Version'); ?> -->
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php wp_head(); ?>
