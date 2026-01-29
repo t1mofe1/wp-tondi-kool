@@ -32,7 +32,7 @@ jobs:
 
           if [ -n "$(git status --porcelain dist)" ]; then
             git add dist
-            git commit -m "chore: build dist"
+            git commit -m "chore: build dist ($GITHUB_SHA)"
             git push
           else
             echo "dist unchanged; nothing to commit."
