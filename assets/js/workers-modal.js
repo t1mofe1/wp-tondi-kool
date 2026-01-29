@@ -73,7 +73,7 @@
     lastFocused?.focus?.();
   }
 
-  async function loadWorker(workerId) {
+  async function loadWorker(slug) {
     if (!contentEl) return;
 
     if (!cfg.ajaxUrl || !cfg.nonce) {
@@ -90,8 +90,7 @@
 
     const form = new FormData();
     form.append('action', 'tondi_worker_modal');
-    form.append('id', workerId);
-    form.append('slug', workerId);
+    form.append('slug', slug);
     form.append('nonce', cfg.nonce);
 
     try {
@@ -126,13 +125,13 @@
     const trigger = e.target.closest('[data-worker-modal]');
     if (!trigger) return;
 
-    const id = trigger.getAttribute('data-worker-modal');
-    if (!id) return;
+    const slug = trigger.getAttribute('data-worker-modal');
+    if (!slug) return;
 
     e.preventDefault();
     openModal();
-    setWorkerInUrl(id);
-    loadWorker(id);
+    setWorkerInUrl(slug);
+    loadWorker(slug);
   });
 
   // Close on close button

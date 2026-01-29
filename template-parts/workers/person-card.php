@@ -3,6 +3,8 @@
 $post_id = $args['post_id'] ?? get_the_ID();
 
 $permalink = get_permalink($post_id);
+$slug = get_post_field('post_name', $post_id);
+
 $name = get_the_title($post_id);
 $position = tondi_worker_position($post_id);
 
@@ -21,7 +23,7 @@ if ($name) {
 
 <article class="person" data-worker-card>
     <a class="person__link" href="<?php echo esc_url($permalink); ?>"
-        data-worker-modal="<?php echo esc_attr($post_id); ?>" aria-haspopup="dialog">
+        data-worker-modal="<?php echo esc_attr($slug); ?>" aria-haspopup="dialog">
 
         <div class="person__avatar" aria-hidden="true">
             <?php if ($avatar_url): ?>
