@@ -2,6 +2,12 @@
 
 // Remove unnecessary admin menu items
 add_action('admin_menu', function () {
+    $hide_menus = get_field('security_hide_extra_admin_menus', 'option');
+
+    if (!$hide_menus) {
+        return;
+    }
+
     remove_menu_page('edit.php');          // Posts
     remove_menu_page('edit-comments.php'); // Comments
 
@@ -18,10 +24,24 @@ add_action('admin_menu', function () {
 
     // Remove "Appearance" menu
     remove_menu_page('themes.php');
+
+    // Remove "Plugins" menu
+    remove_menu_page('plugins.php');
+
+    // Remove "Tools" menu
+    remove_menu_page('tools.php');
+
+    // Remove "General" menu
+    remove_menu_page('options-general.php');
 });
 
 // Remove unncessary admin bar items
 add_action('admin_bar_menu', function ($wp_admin_bar) {
+    $hide_menus = get_field('security_hide_extra_admin_menus', 'option');
+
+    if (!$hide_menus) {
+        return;
+    }
     // Remove "New" menu items
     $wp_admin_bar->remove_node('new-post');
     $wp_admin_bar->remove_node('new-user');
@@ -38,6 +58,12 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 
 // Add custom admin menu page for theme settings
 add_action('admin_menu', function () {
+    $hide_menus = get_field('security_hide_extra_admin_menus', 'option');
+
+    if (!$hide_menus) {
+        return;
+    }
+
     add_menu_page(
         __('Menüüd', 'tondi'),
         __('Menüüd', 'tondi'),

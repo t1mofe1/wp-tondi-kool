@@ -33,6 +33,42 @@ acf_add_options_sub_page([
     'menu_slug' => $mainSettingsMenuSlug,
 ]);
 
+// Security settings
+acf_add_local_field_group([
+    'key' => 'group_security_settings',
+    'title' => 'Turvaseaded',
+    'fields' => [
+        [
+            'key' => 'field_security_strict_mode',
+            'label' => 'Range režiim',
+            'name' => 'security_strict_mode',
+            'type' => 'true_false',
+            'instructions' => 'Kui sees, rakendatakse täiendavaid turvameetmeid, et kaitsta saidi sisu volitamata muutmise eest.',
+            'default_value' => 1,
+            'ui' => 1,
+        ],
+        [
+            'key' => 'field_security_hide_extra_admin_menus',
+            'label' => 'Peida ebavajalikud admin menüüd',
+            'name' => 'security_hide_extra_admin_menus',
+            'type' => 'true_false',
+            'instructions' => 'Kui sees, peidetakse mõned ebavajalikud menüüd WordPressi admin paneelis ja tööriistaribal.',
+            'default_value' => 1,
+            'ui' => 1,
+        ]
+    ],
+    'location' => [
+        [
+            [
+                'param' => 'options_page',
+                'operator' => '==',
+                'value' => $mainSettingsMenuSlug,
+            ]
+        ]
+    ],
+    'active' => true,
+]);
+
 // Calendar settings
 acf_add_local_field_group([
     'key' => 'group_calendar',
