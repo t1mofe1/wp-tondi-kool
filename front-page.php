@@ -327,6 +327,8 @@
 </main>
 
 <script>
+    const mobileQuery = window.matchMedia('(max-width: 1024px)');
+
     document.addEventListener('DOMContentLoaded', function () {
         // --- Fade-in on scroll ---
         const revealItems = document.querySelectorAll('.front-gallery__item');
@@ -405,7 +407,50 @@
 
         // --- Sidebar menu toggle ---
         const fastlinksMenu = document.querySelector('.fastlinks-menu');
+
+        // Fastlinks mobile scroll visibility
+        let lastY = window.scrollY;
+        let ticking = false;
+
+        fastlinksMenu.classList.remove('is-hidden');
+
+        window.addEventListener('scroll', function () {
+            if(ticking) return;
+
+            window.requestAnimationFrame(function () {
+                const y = window.scrollY;
+
+                // If near top, always show
+                if(y < 50) {
+                    fastlinksMenu.classList.remove('is-hidden');
+
+                    lastY = y;
+                    ticking = false;
+
+                    return;
+                }
+
+                const goingUp = y < lastY;
+
+                if (goingUp) {
+                    fastlinksMenu.classList.remove('is-hidden');
+                } else {
+                    fastlinksMenu.classList.add('is-hidden');
+                }
+
+                lastY = y;
+                ticking = false;
+            });
+
+            ticking = true;
+        }, { passive: true});
+
+        // Fastlinks mobile overlay
         fastlinksMenu.addEventListener('click', function () {
+            if(!mobileQuery.matches) {
+                return;
+            }
+
             const isOpen = fastlinksMenu.classList.contains('open');
 
             if(isOpen) {
@@ -415,6 +460,7 @@
                 const overlay = document.getElementById('fastlinks-overlay');
                 if (overlay) {
                     document.body.removeChild(overlay);
+                    document.body.classList.remove('lock');
                 }
             } else {
                 const overlay = document.createElement('div');
@@ -432,9 +478,11 @@
                     fastlinksMenu.classList.remove('open');
                     fastlinksMenu.setAttribute('aria-expanded', 'false');
                     document.body.removeChild(overlay);
+                    document.body.classList.remove('lock');
                 });
 
                 document.body.appendChild(overlay);
+                document.body.classList.add('lock');
 
                 fastlinksMenu.classList.add('open');
                 fastlinksMenu.setAttribute('aria-expanded', 'true');
