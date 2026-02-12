@@ -313,6 +313,8 @@
         gap: $space-2;
         text-align: start;
 
+        word-break: break-word;
+
         .home-calendar__name,
         .home-calendar__place {
           line-height: 1;
