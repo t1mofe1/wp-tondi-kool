@@ -205,12 +205,13 @@
           overflow: hidden;
           border-radius: 12px;
 
+          min-height: 120px;
+          max-height: 180px;
+
           margin-top: auto;
 
           img {
             width: 100%;
-            min-height: 120px;
-            max-height: 180px;
             object-fit: cover;
 
             transition: scale 0.3s ease;
