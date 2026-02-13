@@ -95,7 +95,7 @@
     <div class="container">
         <section class="home-calendar-gallery">
             <?php
-            $events = tondi_get_upcoming_events(4, 300);
+            $events = tondi_get_upcoming_events(5, 300);
             ?>
 
             <section class="home-calendar">
