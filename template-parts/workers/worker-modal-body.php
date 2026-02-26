@@ -6,6 +6,7 @@ $name = get_the_title($post_id);
 $position = (string) tondi_worker_position($post_id);
 $email = (string) tondi_worker_email($post_id);
 $phones = (array) tondi_worker_phones($post_id);
+$notes = (string) tondi_worker_notes($post_id);
 
 $terms = get_the_terms($post_id, 'worker_department');
 $dept_names = (!is_wp_error($terms) && !empty($terms)) ? wp_list_pluck($terms, 'name') : [];
@@ -87,7 +88,7 @@ $phones = array_values(array_filter($phones, function ($p) {
                     continue;
                 }
 
-                ?>
+            ?>
 
                 <div class="worker_modal__info_row">
                     <!-- phone -->
@@ -103,6 +104,20 @@ $phones = array_values(array_filter($phones, function ($p) {
                     </a>
                 </div>
             <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php if ($notes !== ''): ?>
+            <div class="worker_modal__info_row worker_modal__notes">
+                <!-- info -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" x2="12" y1="16" y2="12"></line>
+                    <line x1="12" x2="12.01" y1="8" y2="8"></line>
+                </svg>
+
+                <span style="text-align: start; line-height: 1;"><?php echo wp_kses_post(nl2br(esc_html($notes))); ?></span>
+            </div>
         <?php endif; ?>
     </div>
 </div>

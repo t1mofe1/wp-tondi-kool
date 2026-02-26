@@ -12,15 +12,19 @@ function tondi_worker_placeholder_url(): string
 
 function tondi_worker_hide_photo(int $post_id): bool
 {
-    if (!function_exists('get_field'))
+    if (!function_exists('get_field')) {
         return false;
+    }
+
     return (bool) get_field('worker_hide_photo', $post_id);
 }
 
 function tondi_worker_position(int $post_id): string
 {
-    if (!function_exists('get_field'))
+    if (!function_exists('get_field')) {
         return '';
+    }
+
     return (string) (get_field('worker_position', $post_id) ?: '');
 }
 
@@ -104,4 +108,13 @@ function tondi_worker_avatar(int $post_id, string $size = 'medium', string $clas
         'alt' => $alt,
         'loading' => 'lazy',
     ]);
+}
+
+function tondi_worker_notes(int $post_id): string
+{
+    if (!function_exists('get_field')) {
+        return '';
+    }
+
+    return (string) (get_field('worker_notes', $post_id) ?: '');
 }

@@ -402,6 +402,13 @@ acf_add_local_field_group([
                 ],
             ],
         ],
+        [
+            'key' => 'field_worker_notes',
+            'label' => 'Lisainfo',
+            'name' => 'worker_notes',
+            'type' => 'textarea',
+            'placeholder' => 'Lisa info töötaja kohta',
+        ]
     ],
     'location' => [
         [
