@@ -42,3 +42,18 @@ function tondi_filebird_folder_choices_indented(): array
 
     return $choices;
 }
+
+function tondi_get_filebird_taxonomy_name(): ?string
+{
+    $candidates = [
+        'nt_wmc_folder',       // common for FileBird
+        'filebird_folder',
+        'fb_folder',
+    ];
+
+    foreach ($candidates as $tax) {
+        if (taxonomy_exists($tax)) return $tax;
+    }
+
+    return null;
+}

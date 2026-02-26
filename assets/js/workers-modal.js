@@ -1,4 +1,4 @@
-(function () {
+export function initWorkersModal() {
   const modal = document.getElementById('worker-modal');
   if (!modal) return;
 
@@ -177,4 +177,4 @@
       }
     }
   });
-})();
+}

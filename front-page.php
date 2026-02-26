@@ -265,6 +265,7 @@
                             <button
                                 type="button"
                                 class="front-gallery__item js-gallery-item"
+                                data-id="<?php echo (int) $att_id; ?>"
                                 data-full="<?php echo esc_url($full); ?>"
                                 data-caption="<?php echo esc_attr($caption); ?>">
                                 <?php
@@ -301,10 +302,24 @@
                 <!-- Lightbox overlay -->
                 <div class="gallery-lightbox" aria-hidden="true">
                     <div class="gallery-lightbox__backdrop"></div>
+
                     <figure class="gallery-lightbox__content" role="dialog" aria-modal="true" aria-label="Pilt suurelt">
                         <button type="button" class="gallery-lightbox__close" aria-label="Sulge">&times;</button>
-                        <img src="" alt="" />
+
+                        <button type="button" class="gallery-lightbox__nav gallery-lightbox__prev" aria-label="Eelmine pilt">
+                            &#10094;
+                        </button>
+
+                        <div class="gallery-lightbox__stage">
+                            <img src="" alt="" class="gallery-lightbox__img is-active" />
+                        </div>
+
+                        <button type="button" class="gallery-lightbox__nav gallery-lightbox__next" aria-label="Järgmine pilt">
+                            &#10095;
+                        </button>
+
                         <figcaption></figcaption>
+                        <div class="gallery-lightbox__counter" aria-live="polite"></div>
                     </figure>
                 </div>
             </section>
@@ -395,62 +410,6 @@
             // Fallback for browsers without IntersectionObserver
             revealItems.forEach(el => el.classList.add('is-visible'));
         }
-
-        // --- Lightbox logic ---
-        const items = document.querySelectorAll('.js-gallery-item');
-        const overlay = document.querySelector('.gallery-lightbox');
-        if (!overlay) return;
-
-        const img = overlay.querySelector('img');
-        const caption = overlay.querySelector('figcaption');
-        const closeBtn = overlay.querySelector('.gallery-lightbox__close');
-        const backdrop = overlay.querySelector('.gallery-lightbox__backdrop');
-
-        let lastFocused = null;
-
-        function openLightbox(src, text, origin) {
-            lastFocused = origin || document.activeElement;
-
-            img.src = src;
-            img.alt = text || '';
-            caption.textContent = text || '';
-
-            overlay.classList.add('is-open');
-            overlay.setAttribute('aria-hidden', 'false');
-
-            closeBtn.focus();
-        }
-
-        function closeLightbox() {
-            overlay.classList.remove('is-open');
-            overlay.setAttribute('aria-hidden', 'true');
-
-            img.src = '';
-
-            if (lastFocused && typeof lastFocused.focus === 'function') {
-                lastFocused.focus();
-            }
-        }
-
-        items.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const src = btn.getAttribute('data-full');
-                const text = btn.getAttribute('data-caption') || '';
-
-                if (src) {
-                    openLightbox(src, text, btn);
-                }
-            });
-        });
-
-        closeBtn.addEventListener('click', closeLightbox);
-        backdrop.addEventListener('click', closeLightbox);
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
-                closeLightbox();
-            }
-        });
 
         // --- Sidebar menu toggle ---
         const fastlinksMenu = document.querySelector('.fastlinks-menu');

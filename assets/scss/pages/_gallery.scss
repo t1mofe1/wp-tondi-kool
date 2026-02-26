@@ -1,21 +1,7 @@
 @use '../variables' as *;
 
-// .gallery {
-//   @extend .container;
-// }
-
-.gallery .masonry {
-  columns: 4 280px;
-  column-gap: $space-4;
-}
-.gallery .gallery-item {
-  break-inside: avoid;
-  margin-bottom: $space-4;
-}
-
-@media (max-width: 600px) {
-  .gallery .masonry {
-    columns: 2 160px;
-    column-gap: $space-3;
-  }
+.gallery-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }

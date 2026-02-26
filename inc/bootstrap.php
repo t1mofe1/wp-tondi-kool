@@ -14,7 +14,7 @@ require_once __DIR__ . '/core/uploads.php';
 // --- ACF ---
 require_once __DIR__ . '/acf/acf.php';
 
-// --- Content (CPTs) ---
+// --- Content ---
 require_once __DIR__ . '/content/cpt-registers.php';
 require_once __DIR__ . '/content/queries.php';
 
