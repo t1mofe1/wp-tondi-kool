@@ -108,15 +108,40 @@
                         <?php foreach ($events as $index => $event) : ?>
                             <?php
 
-                            /** @var DateTime $start */
-                            $start = clone($event['start']);
-                            $start->setTimezone(new DateTimeZone('Europe/Tallinn'));
+                            /** @var DateTimeImmutable $start */
+                            $start = $event['start'] ?? null;
+                            /** @var DateTimeImmutable|null $end */
+                            $end = $event['end'] ?? null;
 
-                            $date_attr = $start->format('Y-m-d');
-                            $date_text = $start->format('d.m');
+                            if (!$start instanceof DateTimeImmutable) {
+                                continue;
+                            }
 
-                            $time_attr = $start->format('H:i');
-                            $time_text = $start->format('H:i');
+                            $tz = new DateTimeZone('Europe/Tallinn');
+                            $start = $start->setTimezone($tz);
+                            if ($end instanceof DateTimeImmutable) {
+                                $end = $end->setTimezone($tz);
+                            }
+
+                            $is_all_day = !empty($event['all_day']);
+
+                            // For all-day events, DTEND is typically exclusive -> show end - 1 day
+                            $endDisplay = null;
+                            if ($end instanceof DateTimeImmutable) {
+                                $endDisplay = $is_all_day ? $end->modify('-1 day') : $end;
+                            }
+
+                            $start_date_attr = $start->format('Y-m-d');
+                            $start_date_text = $start->format('d.m');
+                            $start_time_attr = $start->format('H:i');
+                            $start_time_text = $start->format('H:i');
+
+                            $end_date_attr = $endDisplay ? $endDisplay->format('Y-m-d') : '';
+                            $end_date_text = $endDisplay ? $endDisplay->format('d.m') : '';
+                            $end_time_attr = $endDisplay ? $endDisplay->format('H:i') : '';
+                            $end_time_text = $endDisplay ? $endDisplay->format('H:i') : '';
+
+                            $same_day = $endDisplay ? ($start->format('Y-m-d') === $endDisplay->format('Y-m-d')) : true;
 
                             $name = $event['summary'] ?? '';
                             $place = $event['location'] ?? '';
@@ -137,13 +162,35 @@
                                 </div>
 
                                 <div class="home-calendar__meta">
-                                    <time class="home-calendar__date" datetime="<?php echo esc_attr($date_attr); ?>">
-                                        <?php echo esc_html($date_text); ?>
-                                    </time>
+                                    <!-- DATE GROUP -->
+                                    <div class="home-calendar__date-group">
+                                        <time class="home-calendar__date" datetime="<?php echo esc_attr($start_date_attr); ?>">
+                                            <?php echo esc_html($start_date_text); ?>
+                                        </time>
 
-                                    <time class="home-calendar__time" datetime="<?php echo esc_attr($time_attr); ?>">
-                                        <?php echo esc_html($time_text); ?>
-                                    </time>
+                                        <?php if ($endDisplay && !$same_day): ?>
+                                            <span class="home-calendar__dash" aria-hidden="true">–</span>
+                                            <time class="home-calendar__date" datetime="<?php echo esc_attr($end_date_attr); ?>">
+                                                <?php echo esc_html($end_date_text); ?>
+                                            </time>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <?php if (!$is_all_day): ?>
+                                        <!-- TIME GROUP -->
+                                        <div class="home-calendar__time-group">
+                                            <time class="home-calendar__time" datetime="<?php echo esc_attr($start_time_attr); ?>">
+                                                <?php echo esc_html($start_time_text); ?>
+                                            </time>
+
+                                            <?php if ($endDisplay): ?>
+                                                <span class="home-calendar__dash" aria-hidden="true">–</span>
+                                                <time class="home-calendar__time" datetime="<?php echo esc_attr($end_time_attr); ?>">
+                                                    <?php echo esc_html($end_time_text); ?>
+                                                </time>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </li>
 
@@ -154,7 +201,8 @@
                     </ol>
 
                     <!-- <a class="home-events__more_btn" href="#"> -->
-                        <?php // esc_html_e('Vaata kõiki sündmusi', 'tondi'); ?>
+                    <?php // esc_html_e('Vaata kõiki sündmusi', 'tondi');
+                    ?>
                     <!-- </a> -->
                 <?php else : ?>
                     <div class="home-calendar__empty">
@@ -174,13 +222,13 @@
 
                 $folder_id = (int) get_field('front_page_gallery_folder', 'option');
                 $max_slots = (int) get_field('front_page_gallery_limit', 'option') ?: 6;
-                if($max_slots <= 0) {
+                if ($max_slots <= 0) {
                     $max_slots = 6;
                 }
 
                 $attachment_ids = [];
 
-                if($folder_id > 0 && class_exists(\FileBird\Classes\Helpers::class)) {
+                if ($folder_id > 0 && class_exists(\FileBird\Classes\Helpers::class)) {
                     $attachment_ids = (array) \FileBird\Classes\Helpers::getAttachmentIdsByFolderId($folder_id);
                     $attachment_ids = array_values(array_filter(array_map('intval', $attachment_ids)));
                 }
@@ -202,7 +250,7 @@
 
                             // Caption preference: attachment caption, fallback to title
                             $caption = wp_get_attachment_caption($att_id);
-                            if($caption === '') {
+                            if ($caption === '') {
                                 $caption = get_the_title($att_id);
                             }
 
@@ -212,14 +260,13 @@
                                 $alt = get_the_title($att_id);
                             }
 
-                            ?>
+                        ?>
 
                             <button
                                 type="button"
                                 class="front-gallery__item js-gallery-item"
                                 data-full="<?php echo esc_url($full); ?>"
-                                data-caption="<?php echo esc_attr($caption); ?>"
-                            >
+                                data-caption="<?php echo esc_attr($caption); ?>">
                                 <?php
                                 echo wp_get_attachment_image($att_id, 'front_gallery', false, [
                                     'alt' => $alt,
@@ -245,8 +292,7 @@
                     <div class="front-gallery__more_wrap">
                         <a
                             class="front-gallery__more_btn"
-                            href="<?php echo esc_url($gallery_page ? get_permalink($gallery_page) : home_url('/')); ?>"
-                        >
+                            href="<?php echo esc_url($gallery_page ? get_permalink($gallery_page) : home_url('/')); ?>">
                             <?php esc_html_e('Vaata rohkem', 'tondi'); ?>
                         </a>
                     </div>
@@ -311,8 +357,7 @@
                                 href="<?php echo esc_url($url); ?>"
                                 class="home-projects__link"
                                 target="<?php echo esc_attr($target); ?>"
-                                <?php echo ($target === '_blank') ? 'rel="noopener"' : ''; ?>
-                            >
+                                <?php echo ($target === '_blank') ? 'rel="noopener"' : ''; ?>>
                                 <?php echo $img_html; ?>
                             </a>
                         </article>
@@ -329,7 +374,7 @@
 <script>
     const mobileQuery = window.matchMedia('(max-width: 1024px)');
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // --- Fade-in on scroll ---
         const revealItems = document.querySelectorAll('.front-gallery__item');
 
@@ -341,7 +386,9 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.2 });
+            }, {
+                threshold: 0.2
+            });
 
             revealItems.forEach(el => io.observe(el));
         } else {
@@ -399,7 +446,7 @@
         closeBtn.addEventListener('click', closeLightbox);
         backdrop.addEventListener('click', closeLightbox);
 
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
                 closeLightbox();
             }
@@ -414,14 +461,14 @@
 
         fastlinksMenu.classList.remove('is-hidden');
 
-        window.addEventListener('scroll', function () {
-            if(ticking) return;
+        window.addEventListener('scroll', function() {
+            if (ticking) return;
 
-            window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function() {
                 const y = window.scrollY;
 
                 // If near top, always show
-                if(y < 50) {
+                if (y < 50) {
                     fastlinksMenu.classList.remove('is-hidden');
 
                     lastY = y;
@@ -443,17 +490,19 @@
             });
 
             ticking = true;
-        }, { passive: true});
+        }, {
+            passive: true
+        });
 
         // Fastlinks mobile overlay
-        fastlinksMenu.addEventListener('click', function () {
-            if(!mobileQuery.matches) {
+        fastlinksMenu.addEventListener('click', function() {
+            if (!mobileQuery.matches) {
                 return;
             }
 
             const isOpen = fastlinksMenu.classList.contains('open');
 
-            if(isOpen) {
+            if (isOpen) {
                 fastlinksMenu.classList.remove('open');
                 fastlinksMenu.setAttribute('aria-expanded', 'false');
 
@@ -474,7 +523,7 @@
                 overlay.style.zIndex = '500';
                 overlay.style.background = 'rgba(0, 0, 0, 0.35)';
 
-                overlay.addEventListener('click', function () {
+                overlay.addEventListener('click', function() {
                     fastlinksMenu.classList.remove('open');
                     fastlinksMenu.setAttribute('aria-expanded', 'false');
                     document.body.removeChild(overlay);

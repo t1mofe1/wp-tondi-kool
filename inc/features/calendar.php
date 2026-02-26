@@ -131,10 +131,16 @@ function tondi_parse_ics_events(string $ics, ?DateTimeZone $tz = null): array
             $start = isset($current['DTSTART']) ? tondi_ics_parse_dt($current['DTSTART'], $tz) : null;
             $end = isset($current['DTEND']) ? tondi_ics_parse_dt($current['DTEND'], $tz) : null;
 
+            $all_day = false;
+            if (isset($current['DTSTART']) && str_contains($current['DTSTART'], 'VALUE=DATE')) {
+                $all_day = true;
+            }
+
             if ($start instanceof DateTimeImmutable && $summary !== '') {
                 $events[] = [
                     'start' => $start,
                     'end' => $end instanceof DateTimeImmutable ? $end : null,
+                    'all_day' => $all_day,
                     'summary' => $summary,
                     'location' => $location,
                     'uid' => $uid,
@@ -223,14 +229,16 @@ function tondi_ics_parse_dt(string $rawLine, DateTimeZone $defaultTz): ?DateTime
         }
     }
 
-    // Date-only
+    // Date-only (all-day)
     if (!empty($params['VALUE']) && strtoupper((string) $params['VALUE']) === 'DATE') {
         // YYYYMMDD
         if (!preg_match('/^\d{8}$/', $val)) {
             return null;
         }
 
-        $dt = DateTimeImmutable::createFromFormat('Ymd', $val, $tz);
+        // Force midnight to avoid "current time" leaking in
+        $dt = DateTimeImmutable::createFromFormat('!Ymd', $val, $tz);
+        // "!" resets time to 00:00:00
 
         return $dt ?: null;
     }
@@ -304,56 +312,4 @@ function tondi_get_upcoming_events(int $limit = 6, int $cache_seconds = 300): ar
     });
 
     return array_slice(array_values($events), 0, max(0, $limit));
-}
-
-// -----------------------------
-// 5) Render helper (your HTML structure)
-// -----------------------------
-function tondi_render_home_calendar_list(array $events): void
-{
-    if (empty($events)) {
-        echo '<p class="home-calendar__empty">' . esc_html__('Üritusi ei leitud.', 'tondi') . '</p>';
-        return;
-    }
-
-    echo '<ol class="home-calendar__list">';
-
-    $count = count($events);
-    foreach ($events as $i => $e) {
-        /** @var DateTimeImmutable $start */
-        $start = $e['start'];
-        $summary = (string) ($e['summary'] ?? '');
-        $location = (string) ($e['location'] ?? '');
-
-        $date_iso = $start->format('Y-m-d');
-        $time_iso = $start->format('H:i');
-        $date_ui = $start->format('d.m');
-        $time_ui = $start->format('H:i');
-
-        ?>
-
-        <li class="home-calendar__item">
-            <div class="home-calendar__info">
-                <h3 class="home-calendar__name"><?php echo esc_html($summary); ?></h3>
-                <?php if ($location): ?>
-                    <p class="home-calendar__place"><?php echo esc_html($location); ?></p>
-                <?php endif; ?>
-            </div>
-
-            <div class="home-calendar__meta">
-                <time class="home-calendar__date"
-                    datetime="<?php echo esc_attr($date_iso); ?>"><?php echo esc_html($date_ui); ?></time>
-                <time class="home-calendar__time"
-                    datetime="<?php echo esc_attr($time_iso); ?>"><?php echo esc_html($time_ui); ?></time>
-            </div>
-        </li>
-
-        <?php
-
-        if ($i < $count - 1) {
-            echo '<hr class="home-calendar__separator" />';
-        }
-    }
-
-    echo '</ol>';
 }
