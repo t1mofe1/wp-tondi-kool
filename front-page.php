@@ -400,6 +400,8 @@
             <input type="search" name="s" class="site-search-modal__input" placeholder="<?php esc_attr_e('Kirjuta siia…', 'tondi'); ?>" />
             <button type="submit" class="site-search-modal__submit"><?php esc_html_e('Otsi', 'tondi'); ?></button>
         </form>
+
+        <div class="site-search-modal__results" hidden></div>
     </div>
 </div>
 

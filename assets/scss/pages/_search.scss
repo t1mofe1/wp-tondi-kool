@@ -192,3 +192,67 @@
     }
   }
 }
+
+.site-search-modal__results {
+  margin-top: $space-3;
+
+  .live-search-list {
+    display: grid;
+    gap: $space-2;
+
+    padding: $space-2;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.08);
+
+    max-height: 320px;
+    overflow: auto;
+  }
+
+  .live-search-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: $space-3;
+    align-items: start;
+
+    padding: $space-3;
+    border-radius: 12px;
+    text-decoration: none;
+
+    &:hover {
+      background: rgba(0,0,0,.04);
+    }
+  }
+
+  .live-search-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    background: rgba(0,0,0,.06);
+    white-space: nowrap;
+  }
+
+  .live-search-title {
+    display: block;
+    font-weight: 600;
+
+    mark {
+      padding: 0.05em 0.2em;
+      border-radius: 6px;
+      background: rgba(255, 210, 0, 0.35);
+    }
+  }
+
+  .live-search-sub {
+    margin-top: 0.15rem;
+    opacity: 0.75;
+    font-size: 0.95em;
+  }
+
+  .live-search-empty {
+    padding: $space-3;
+    opacity: 0.75;
+  }
+}

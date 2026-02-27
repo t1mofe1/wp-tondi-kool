@@ -81,6 +81,12 @@ add_action('wp_enqueue_scripts', function () {
         'nonce' => wp_create_nonce('tondi_worker_modal'),
     ];
 
+    $live_search_config = [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('tondi_live_search'),
+        'minLen' => 2,
+    ];
+
     // ----------------------------
     // DEV (Vite)
     // ----------------------------
@@ -88,6 +94,12 @@ add_action('wp_enqueue_scripts', function () {
         // Dev scripts are usually fine in head; keep as you had.
         wp_enqueue_script('vite-client', $vite_origin . '/@vite/client', [], null, false);
         wp_enqueue_script('tondi-main', $vite_origin . '/' . $entry_src, [], null, false);
+
+        wp_add_inline_script(
+            'tondi-main',
+            'window.TondiLiveSearch=' . wp_json_encode($live_search_config) . ';',
+            'before'
+        );
 
         if ($is_kontakt_page) {
             wp_add_inline_script(
@@ -141,6 +153,12 @@ add_action('wp_enqueue_scripts', function () {
             [],
             file_exists($abs) ? (string) filemtime($abs) : null,
             true
+        );
+
+        wp_add_inline_script(
+            'tondi-main',
+            'window.TondiLiveSearch=' . wp_json_encode($live_search_config) . ';',
+            'before'
         );
     } else {
         error_log('[Tondi] Vite manifest entry has no "file": ' . $entry_src);
