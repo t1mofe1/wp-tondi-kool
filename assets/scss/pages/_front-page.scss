@@ -9,10 +9,6 @@
   margin-block: $space-6;
 
   @include mq('<=desktop') {
-    // flex-direction: column;
-    // text-align: center;
-    // gap: $space-6;
-
     gap: 0;
   }
 
@@ -278,7 +274,7 @@
 
     text-align: center;
 
-    @include mq('<=tablet') {
+    @include mq('<=desktop') {
       width: 100%;
     }
 
@@ -301,7 +297,7 @@
       background-color: #ede6dd;
       list-style: none;
 
-      @include mq('<=tablet') {
+      @include mq('<=desktop') {
         width: 100%;
       }
     }
