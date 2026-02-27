@@ -16,8 +16,14 @@
 }
 .custom-logo {
   height: 128px;
+  max-height: 128px;
   width: auto;
   min-width: min-content;
+
+  @include mq('<=tablet') {
+    height: auto;
+    min-width: initial;
+  }
 }
 .site-title {
   font-size: 2rem;
