@@ -17,6 +17,7 @@ require_once __DIR__ . '/acf/acf.php';
 // --- Content ---
 require_once __DIR__ . '/content/cpt-registers.php';
 require_once __DIR__ . '/content/queries.php';
+require_once __DIR__ . '/content/search.php';
 
 // --- Features ---
 require_once __DIR__ . '/features/calendar.php';

@@ -1,0 +1,194 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.search-page {
+  margin-block: $space-12;
+
+  mark {
+    padding: 0.05em 0.2em;
+    border-radius: 6px;
+    background: rgba(255, 210, 0, 0.35);
+  }
+
+  .search-header {
+    display: grid;
+    gap: $space-3;
+    margin-bottom: $space-8;
+  }
+
+  .search-title {
+    font-size: $space-8;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .search-term {
+    white-space: nowrap;
+  }
+
+  .search-meta {
+    margin: 0;
+    opacity: 0.75;
+  }
+
+  .search-form-wrap {
+    max-width: 560px;
+  }
+
+  .search-results {
+    display: grid;
+    gap: $space-6;
+  }
+
+  .search-card {
+    display: grid;
+    gap: $space-6;
+
+    padding: $space-6;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    .search-body {
+      min-width: 0;
+    }
+
+    &.has-thumb {
+      grid-template-columns: 160px 1fr;
+    }
+
+    &.no-thumb {
+      grid-template-columns: 1fr;
+
+      .search-body {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &--worker {
+      grid-template-columns: 96px 1fr;
+
+      @include mq('<=tablet') {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  .saerch-worker-avatar__img {
+    width: 96px;
+    height: 96px;
+    border-radius: 16px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .search-worker-position {
+    margin: 0 0 $space-2 0;
+    opacity: 0.85;
+  }
+
+  .search-worker-contact {
+    margin: 0 0 $space-2 0;
+  }
+
+  .search-worker-phones {
+    margin: 0;
+    padding-left: 1.1rem;
+
+    li {
+      margin-top: 0.25rem;
+    }
+  }
+
+  .search-thumb img {
+    width: 100%;
+    height: 100%;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .search-topline {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    margin-bottom: $space-2;
+  }
+
+  .search-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .search-date {
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+
+  .search-item-title {
+    margin: 0 0 $space-2 0;
+    font-size: 1.25rem;
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .search-excerpt {
+    opacity: 0.9;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .search-actions {
+    margin-top: $space-3;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .search-readmore {
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .search-empty {
+    padding: $space-6;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    .search-tips {
+      margin-top: $space-4;
+      padding-left: 1.25rem;
+      opacity: 0.9;
+    }
+  }
+
+  .search-pagination {
+    margin-top: $space-8;
+  }
+
+  @include mq('<=tablet') {
+    .search-card {
+      grid-template-columns: 1fr;
+    }
+
+    .search-thumb img {
+      max-height: 220px;
+    }
+  }
+}

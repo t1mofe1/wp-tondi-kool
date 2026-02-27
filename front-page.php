@@ -386,6 +386,68 @@
     <div class="home-border-three" aria-hidden="true"></div>
 </main>
 
+<div id="site-search-modal" class="site-search-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="site-search-modal__backdrop" data-search-close></div>
+
+    <div class="site-search-modal__panel" role="document">
+        <button type="button" class="site-search-modal__close" aria-label="<?php esc_attr_e('Close search', 'tondi'); ?>" data-search-close>
+            ✕
+        </button>
+
+        <h2 class="site-search-modal__title"><?php esc_html_e('Otsing', 'tondi'); ?></h2>
+
+        <form role="search" method="get" class="site-search-modal__form" action="<?php echo esc_url(home_url('/')); ?>">
+            <input type="search" name="s" class="site-search-modal__input" placeholder="<?php esc_attr_e('Kirjuta siia…', 'tondi'); ?>" />
+            <button type="submit" class="site-search-modal__submit"><?php esc_html_e('Otsi', 'tondi'); ?></button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('click', (e) => {
+            const openBtn = e.target.closest('.fastlinks-search-open');
+            const modal = document.getElementById('site-search-modal');
+
+            if (!modal) return;
+
+            if (openBtn) {
+                e.preventDefault();
+
+                modal.setAttribute('aria-hidden', 'false');
+                modal.classList.add('is-open');
+
+                document.body.classList.add('lock');
+
+                const input = modal.querySelector('input[type="search"]');
+                setTimeout(() => input?.focus(), 50);
+            }
+
+            if (e.target.matches('[data-search-close]') || e.target.closest('[data-search-close]')) {
+                modal.setAttribute('aria-hidden', 'true');
+                modal.classList.remove('is-open');
+
+                document.body.classList.remove('lock');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('site-search-modal');
+
+                if (!modal) return;
+
+                if (modal.classList.contains('is-open')) {
+                    modal.setAttribute('aria-hidden', 'true');
+                    modal.classList.remove('is-open');
+
+                    document.body.classList.remove('lock');
+                }
+            }
+        });
+    });
+</script>
+
 <script>
     const mobileQuery = window.matchMedia('(max-width: 1024px)');
 

@@ -1,0 +1,90 @@
+@use '../mixins' as *;
+@use '../variables' as *;
+@use 'sass:color';
+
+.fastlinks-menu-item.fastlinks-is-search .fastlinks-menu-link {
+  border: 0;
+  text-align: start;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:hover {
+    filter: none;
+  }
+}
+
+.site-search-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: none;
+  &.is-open {
+    display: block;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+  }
+
+  &__panel {
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    translate: -50% -10px;
+    width: min(560px, calc(100% - 2rem));
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.25rem;
+    opacity: 0;
+    transition:
+      translate 0.2s ease,
+      opacity 0.2s ease;
+  }
+  &.is-open &__panel {
+    translate: -50% 0;
+    opacity: 1;
+  }
+
+  @include mq('<=tablet') {
+    &__panel {
+      inset: 0;
+      width: auto;
+      border-radius: 0;
+    }
+    &.is-open &__panel {
+      translate: 0 0;
+    }
+
+    &__form {
+      flex-direction: column;
+    }
+
+    &__input {
+      width: 100%;
+    }
+  }
+
+  &__form {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  &__input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+
+  &__submit {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 0;
+    cursor: pointer;
+  }
+}
