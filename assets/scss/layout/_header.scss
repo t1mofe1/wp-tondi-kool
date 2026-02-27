@@ -40,6 +40,11 @@
   display: none;
   border-radius: 12px;
   cursor: pointer;
+  min-width: fit-content;
+
+  &__label {
+    color: var(--wp--preset--color--tumehall);
+  }
 }
 .primary-nav {
   margin-left: auto;
