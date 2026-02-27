@@ -1,5 +1,7 @@
 <?php
 
+use WP_Query;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -16,8 +18,10 @@ $args = [
     'post_type' => 'worker',
     'post_status' => 'publish',
     'posts_per_page' => -1,
-    'orderby' => 'title',
-    'order' => 'ASC',
+    'orderby' => [
+        'menu_order' => 'ASC',
+        'title' => 'ASC',
+    ],
 ];
 
 if ($search) {
