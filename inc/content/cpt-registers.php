@@ -31,7 +31,7 @@ add_action('init', function () {
         ],
         'public' => true,
         'menu_icon' => 'dashicons-megaphone',
-        'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'revisions'],
+        'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes'],
         'has_archive' => true,
         'rewrite' => ['slug' => 'uudised'],
         'show_in_rest' => true,
@@ -78,7 +78,7 @@ add_action('init', function () {
         'exclude_from_search' => true,
 
         'menu_icon' => 'dashicons-businessperson',
-        'supports' => ['title', 'thumbnail'],
+        'supports' => ['title', 'thumbnail', 'page-attributes'],
         'show_in_rest' => true,
     ]);
 

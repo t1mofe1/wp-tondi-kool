@@ -16,5 +16,11 @@ add_action('pre_get_posts', function ($q) {
         }
 
         $q->set('posts_per_page', $ppp);
+
+        // Manual order first (menu_order), then newest by date
+        $q->set('orderby', [
+            'menu_order' => 'DESC',
+            'date' => 'DESC',
+        ]);
     }
 });
