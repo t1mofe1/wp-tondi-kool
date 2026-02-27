@@ -469,57 +469,6 @@
       border-radius: 999px;
       text-decoration: none;
     }
-
-    .gallery-lightbox {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-
-      &.is-open {
-        display: flex;
-      }
-
-      &__backdrop {
-        position: absolute;
-        inset: 0;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: -1;
-      }
-
-      &__content {
-        img {
-          max-width: 100%;
-          max-height: calc(80vh - 60px);
-          object-fit: contain;
-          display: block;
-          background-color: #000;
-        }
-
-        figcaption {
-          padding: 0.5rem 0.9rem;
-          font-size: 0.9rem;
-          color: #f5f2ec;
-          text-align: left;
-        }
-      }
-
-      &__close {
-        position: absolute;
-        top: 8px;
-        right: 10px;
-        border: none;
-        background: rgba(0, 0, 0, 0.6);
-        color: #fff;
-        font-size: 1.6rem;
-        line-height: 1;
-        padding: 0.1rem 0.6rem;
-        border-radius: 999px;
-        cursor: pointer;
-      }
-    }
   }
 }
 

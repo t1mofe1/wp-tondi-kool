@@ -73,7 +73,7 @@
   overflow: hidden;
   border-radius: 16px;
 
-  background: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.02);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 }
 
@@ -117,7 +117,7 @@
   display: grid;
   place-items: center;
 
-  background: rgba(255, 255, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.92);
   color: #111;
 
   font-size: 22px;
@@ -125,11 +125,11 @@
 
   transition:
     transform 0.18s ease,
-    background 0.18s ease;
+    background-color 0.18s ease;
 
   &:hover {
     transform: scale(1.08);
-    background: #fff;
+    background-color: #fff;
   }
 
   &:focus-visible {
@@ -154,17 +154,17 @@
   display: grid;
   place-items: center;
 
-  background: rgba(255, 255, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.92);
   color: #111;
   font-size: 22px;
 
   transition:
     transform 0.18s ease,
-    background 0.18s ease;
+    background-color 0.18s ease;
 
   &:hover {
     transform: translateY(-50%) scale(1.08);
-    background: #fff;
+    background-color: #fff;
   }
 
   &:focus-visible {
