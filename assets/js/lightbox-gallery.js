@@ -54,6 +54,17 @@ export function initGalleryLightbox() {
     document.body.classList.toggle('lock', !!lock);
   }
 
+  function preventGesture(e) {
+    if (!isOpen) return;
+    e.preventDefault();
+  }
+  overlay.addEventListener('touchmove', preventGesture, { passive: false });
+  document.addEventListener('gesturestart', preventGesture, { passive: false });
+  document.addEventListener('gesturechange', preventGesture, {
+    passive: false,
+  });
+  document.addEventListener('gestureend', preventGesture, { passive: false });
+
   function parseId(val) {
     const n = parseInt(String(val || ''), 10);
     return Number.isFinite(n) ? n : null;
