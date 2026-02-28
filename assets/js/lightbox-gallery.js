@@ -249,6 +249,17 @@ export function initGalleryLightbox() {
   if (nextBtn) nextBtn.addEventListener('click', next);
   if (prevBtn) prevBtn.addEventListener('click', prev);
 
+  // Close when clicking stage background
+  stage.addEventListener('click', (e) => {
+    if (!isOpen) return;
+
+    // Ignore clicks on controls
+    if (e.target.closest('.gallery-lightbox__nav, .gallery-lightbox__close'))
+      return;
+
+    close({ updateUrl: true });
+  });
+
   // Keyboard
   document.addEventListener('keydown', (e) => {
     if (!isOpen) return;
