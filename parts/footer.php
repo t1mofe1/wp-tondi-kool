@@ -130,6 +130,35 @@ if (!function_exists('tondi_footer_icon_html')) {
                                             </div>
                                         <?php endif;
                                         break;
+
+                                    case 'map':
+                                        $embed_url = trim($block['embed_url'] ?? '');
+                                        $height = (int) ($block['height'] ?? 280);
+                                        $title = trim($block['title'] ?? 'Google Map');
+
+                                        // Basic allow-list for safety
+                                        $ok = ($embed_url !== '' && preg_match('#^https://www\.google\.com/maps/embed\?#', $embed_url));
+
+                                        if ($ok):
+                                            if ($height < 180) $height = 180;
+                                            if ($height > 600) $height = 600;
+                                        ?>
+
+                                            <div class="footer-block footer-block--map">
+                                                <div class="footer-map" style="--map-h: <?php echo esc_attr($height); ?>px;">
+                                                    <iframe
+                                                        title="<?php echo esc_attr($title); ?>"
+                                                        src="<?php echo esc_url($embed_url); ?>"
+                                                        loading="lazy"
+                                                        frameborder="0" style="border:0"
+                                                        referrerpolicy="no-referrer-when-downgrade"
+                                                        allowfullscreen></iframe>
+                                                </div>
+                                            </div>
+
+                                <?php
+                                        endif;
+                                        break;
                                 } ?>
                             <?php endforeach; ?>
                         <?php endif; ?>

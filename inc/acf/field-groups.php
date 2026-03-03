@@ -334,6 +334,41 @@ acf_add_local_field_group([
                                 ],
                             ],
                         ],
+
+                        // MAP
+                        [
+                            'key' => 'layout_map',
+                            'name' => 'map',
+                            'label' => 'Google kaart',
+                            'display' => 'block',
+                            'sub_fields' => [
+                                [
+                                    'key' => 'field_footer_map_embed_url',
+                                    'label' => 'Google Maps embed URL',
+                                    'name' => 'embed_url',
+                                    'type' => 'url',
+                                    'instructions' => 'Sisesta Google Mapsi embed URL, mis sisaldab kooli asukohta. (https://www.google.com/maps/embed?pb=...)',
+                                    'required' => true,
+                                ],
+                                [
+                                    'key' => 'field_footer_map_height',
+                                    'label' => 'Kaardi kõrgus (px)',
+                                    'name' => 'height',
+                                    'type' => 'number',
+                                    'default_value' => 280,
+                                    'min' => 180,
+                                    'max' => 600,
+                                    'step' => 10,
+                                ],
+                                [
+                                    'key' => 'field_footer_map_title',
+                                    'label' => 'Pealkiri',
+                                    'name' => 'title',
+                                    'type' => 'text',
+                                    'default_value' => 'Tondi Kooli asukoht',
+                                ]
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -359,7 +394,7 @@ acf_add_local_field_group([
 
 #endregion Footer page
 
-// Workers (personal) fields
+#region Workers (personal) fields
 acf_add_local_field_group([
     'key' => 'group_tondi_workers',
     'title' => 'Töötaja väljad',
@@ -421,3 +456,4 @@ acf_add_local_field_group([
     ],
     'active' => true,
 ]);
+#endregion Workers (personal) fields
