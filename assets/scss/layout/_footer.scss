@@ -50,16 +50,6 @@
     margin: 0 0 $space-2;
     font-size: clamp($space-4, 1.2vw, 1.125rem);
   }
-
-  .footer-list,
-  .footer-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .footer-links li + li {
-    margin-top: 0.35rem;
-  }
 }
 
 .footer-block--richtext {
