@@ -6,7 +6,7 @@
   align-items: center;
   flex-direction: column;
 
-  max-width: min-content;
+  width: clamp(220px, 22vw, 320px);
 
   &__title {
     margin-bottom: $space-2;
@@ -17,7 +17,7 @@
   &__nav {
     border-radius: 12px;
     background-color: #ede6dd;
-    padding: $space-4 $space-6;
+    padding: $space-4 $space-4;
   }
 
   &__list {
@@ -31,17 +31,20 @@
     list-style: none;
 
     .menu-item {
-      display: flex;
-      align-items: center;
-      gap: $space-1;
-      text-decoration: none;
+      width: 100%;
 
       > a {
         display: block;
+
+        width: 100%;
         padding: $space-1 $space-3;
-        border-radius: 999px;
-        white-space: normal;
+        border-radius: 14px;
         color: var(--wp--preset--color--hall);
+
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+
         text-decoration: none;
         font-size: 1.25rem;
         font-weight: bold;
@@ -53,22 +56,72 @@
         background-color: var(--wp--preset--color--helekollane);
       }
 
-      &.menu-item-has-children {
-        align-items: flex-start;
-        justify-content: center;
-        flex-direction: column;
-
-        > a::after {
-          content: '\25BC';
-          font-size: 0.8rem;
-          margin-left: 0.25rem;
-          line-height: 1;
-        }
-      }
-
       &.current-menu-item > a,
       &.current-menu-ancestor > a {
         background-color: var(--wp--preset--color--helekollane);
+      }
+
+      &.menu-item-has-children {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        align-items: center;
+        column-gap: $space-1;
+        row-gap: $space-1;
+
+        > a {
+          grid-column: 1;
+          grid-row: 1;
+
+          display: flex;
+          align-items: center;
+
+          width: 100%;
+          justify-self: stretch;
+        }
+
+        > .sub-sidebar__toggle {
+          grid-column: 2;
+          grid-row: 1;
+
+          width: 32px;
+          height: 32px;
+          padding: 0;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border: 0;
+          border-radius: 8px;
+          background: transparent;
+
+          color: var(--wp--preset--color--hall);
+          cursor: pointer;
+
+          transition: background-color 0.15s ease;
+
+          &:hover,
+          &:focus-visible {
+            background-color: rgba(0, 0, 0, 0.06);
+            outline: none;
+          }
+        }
+
+        .sub-sidebar__toggle-icon {
+          font-size: 1.2rem;
+          line-height: 1;
+          transition: transform 0.15s ease;
+        }
+
+        &.is-open > .sub-sidebar__toggle .sub-sidebar__toggle-icon {
+          transform: rotate(180deg);
+        }
+
+        > .sub-menu {
+          grid-column: 1 / -1;
+          grid-row: 2;
+        }
       }
     }
 
@@ -76,8 +129,19 @@
       display: flex;
       flex-direction: column;
 
+      list-style: none;
+
       gap: $space-1;
-      padding-inline: $space-6;
+      padding-inline: $space-4;
+
+      overflow: hidden;
+      height: 0;
+      transition: height 0.22s ease;
+      will-change: height;
+
+      &[aria-hidden='true'] {
+        visibility: hidden;
+      }
     }
   }
 }
