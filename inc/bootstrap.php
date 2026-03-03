@@ -27,4 +27,5 @@ require_once __DIR__ . '/features/workers-modal.php';
 
 // --- Navigation ---
 require_once __DIR__ . '/navigation/class-tondi-fastlinks-walker.php';
+require_once __DIR__ . '/navigation/nav-empty-header-menu.php';
 require_once __DIR__ . '/navigation/nav-submenu.php';
