@@ -90,19 +90,11 @@
   transition: 0.15s;
 
   text-decoration-color: transparent;
-
-  // Opera and Mozilla support
-  // -webkit-text-decoration-color: transparent;
-  // -moz-text-decoration-color: transparent;
 }
 .footer-link__anchor:hover .footer-link__label,
 .footer-link__anchor:focus .footer-link__label,
 .footer-block--richtext a:hover {
   text-decoration-color: #fff;
-
-  // Opera and Mozilla support
-  // -webkit-text-decoration-color: #fff;
-  // -moz-text-decoration-color: #fff;
 }
 
 .logo-caption {
