@@ -1,4 +1,11 @@
-<?php get_header(); ?>
+<?php
+
+use Tondi_Fastlinks_Walker;
+use WP_Query;
+
+get_header();
+
+?>
 
 <main id="main" class="home" role="main">
     <div class="container">
@@ -25,8 +32,12 @@
                 $news_q = new WP_Query([
                     'post_type' => 'news',
                     'posts_per_page' => 3,
-                    'ignore_sticky_posts' => true,
                     'post_status' => 'publish',
+                    'orderby' => [
+                        'menu_order' => 'ASC',
+                        'date' => 'DESC',
+                    ],
+                    'order' => 'ASC',
                 ]);
 
                 $news_more_url = get_post_type_archive_link('news');
