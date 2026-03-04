@@ -225,11 +225,12 @@
 @media (prefers-reduced-motion: reduce) {
   .gallery-lightbox,
   .gallery-lightbox__content {
-    transition-duration: 1ms !important;
+    transition-duration: 120ms !important;
   }
 
   .gallery-lightbox__img {
-    transition: opacity 1ms linear !important;
+    transition: opacity 160ms ease !important;
     transform: none !important;
+    will-change: opacity;
   }
 }

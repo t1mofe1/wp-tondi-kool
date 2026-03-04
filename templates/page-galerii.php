@@ -72,6 +72,7 @@ get_header();
                                             type="button"
                                             class="front-gallery__item js-gallery-item"
                                             data-id="<?php echo (int) $att_id; ?>"
+                                            data-alt="<?php echo esc_attr($alt); ?>"
                                             data-full="<?php echo esc_url($full); ?>"
                                             data-caption="<?php echo esc_attr($caption); ?>">
                                             <?php

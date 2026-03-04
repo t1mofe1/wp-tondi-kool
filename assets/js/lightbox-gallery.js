@@ -108,11 +108,12 @@ export function initGalleryLightbox() {
   }
 
   function instantSet(src, alt) {
-    activeImg.src = src || '';
-    activeImg.alt = alt || '';
     activeImg.classList.add('is-active');
     activeImg.style.transform = '';
     activeImg.style.opacity = '';
+
+    activeImg.src = src || '';
+    activeImg.alt = alt || '';
   }
 
   function createImg(src, alt) {
@@ -123,6 +124,9 @@ export function initGalleryLightbox() {
     return el;
   }
 
+  const motionMql = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = () => motionMql.matches;
+
   // Slide + fade animation
   function animateTo(src, alt, direction = 1) {
     if (isAnimating) return;
@@ -130,10 +134,52 @@ export function initGalleryLightbox() {
 
     const nextImg = createImg(src, alt);
 
-    // Prepare next image initial state before adding to DOM
+    let done = false;
+    let timerId = null;
+
+    const finish = () => {
+      if (done) return;
+      done = true;
+      if (timerId) window.clearTimeout(timerId);
+
+      // Remove old image
+      if (activeImg?.parentNode) activeImg.remove();
+
+      nextImg.classList.add('is-active');
+      nextImg.style.transform = '';
+      nextImg.style.opacity = '';
+
+      activeImg = nextImg;
+
+      isAnimating = false;
+    };
+
+    // Reduced motion: fade only
+    if (prefersReducedMotion()) {
+      nextImg.style.transform = 'none';
+      nextImg.style.opacity = '0';
+      stage.appendChild(nextImg);
+
+      // Force reflow
+      nextImg.getBoundingClientRect();
+
+      // Fade out current, fade in next
+      activeImg.classList.add('is-active');
+      activeImg.style.transform = 'none';
+      activeImg.style.opacity = '0';
+      nextImg.style.opacity = '1';
+
+      nextImg.addEventListener('transitionend', finish, { once: true });
+      nextImg.addEventListener('transitioncancel', finish, { once: true });
+
+      // Safety timeout in case transitionend doesn't fire
+      timerId = window.setTimeout(finish, 260);
+      return;
+    }
+
+    // Normal motion: slide + fade
     nextImg.style.transform = `translateX(${direction * 18}%)`;
     nextImg.style.opacity = '0';
-
     stage.appendChild(nextImg);
 
     const cs = window.getComputedStyle(nextImg);
@@ -151,28 +197,6 @@ export function initGalleryLightbox() {
       );
 
     const total = toMsMax(cs.transitionDuration) + toMsMax(cs.transitionDelay);
-
-    let done = false;
-
-    let timerId = null;
-
-    const finish = () => {
-      if (done) return;
-      done = true;
-
-      if (timerId) window.clearTimeout(timerId);
-
-      // Remove old image
-      if (activeImg?.parentNode) activeImg.remove();
-
-      nextImg.classList.add('is-active');
-      nextImg.style.transform = '';
-      nextImg.style.opacity = '';
-
-      activeImg = nextImg;
-
-      isAnimating = false;
-    };
 
     // If no animation, finish immediately
     if (total === 0 || cs.transitionProperty === 'none') {
@@ -218,22 +242,26 @@ export function initGalleryLightbox() {
     index = (i + items.length) % items.length;
 
     const btn = items[index];
+
     const src = btn.dataset?.full || '';
     const text = btn.dataset?.caption || '';
+    const alt = btn.dataset?.alt || text || '';
+
     const id = getItemId(index);
 
-    setMeta(text);
-
     if (!animate) {
-      instantSet(src, text);
+      instantSet(src, alt);
     } else {
-      animateTo(src, text, direction);
+      animateTo(src, alt, direction);
     }
+
+    setMeta(text);
 
     // Preload neighbors
     const nextSrc = items[(index + 1) % items.length]?.dataset?.full;
     const prevSrc =
       items[(index - 1 + items.length) % items.length]?.dataset?.full;
+
     preloadNeighbor(nextSrc);
     preloadNeighbor(prevSrc);
 
@@ -282,10 +310,14 @@ export function initGalleryLightbox() {
   }
 
   function next() {
+    if (!isOpen) return;
+
     setSlide(index + 1, { updateUrl: true, animate: true, direction: 1 });
   }
 
   function prev() {
+    if (!isOpen) return;
+
     setSlide(index - 1, { updateUrl: true, animate: true, direction: -1 });
   }
 
