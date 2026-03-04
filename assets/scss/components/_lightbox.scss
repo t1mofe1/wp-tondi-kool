@@ -224,8 +224,12 @@
 /* Optional: reduce motion */
 @media (prefers-reduced-motion: reduce) {
   .gallery-lightbox,
-  .gallery-lightbox__content,
+  .gallery-lightbox__content {
+    transition-duration: 1ms !important;
+  }
+
   .gallery-lightbox__img {
-    transition: none !important;
+    transition: opacity 1ms linear !important;
+    transform: none !important;
   }
 }

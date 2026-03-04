@@ -130,44 +130,91 @@ export function initGalleryLightbox() {
 
     const nextImg = createImg(src, alt);
 
-    // Start offscreen (direction: 1 = next to left, -1 = prev to right)
+    // Prepare next image initial state before adding to DOM
     nextImg.style.transform = `translateX(${direction * 18}%)`;
     nextImg.style.opacity = '0';
 
     stage.appendChild(nextImg);
 
-    // Force layout
-    // eslint-disable-next-line no-unused-expressions
-    nextImg.getBoundingClientRect();
+    const cs = window.getComputedStyle(nextImg);
 
-    // Animate current out + next in
-    activeImg.style.transform = `translateX(${direction * -18}%)`;
-    activeImg.style.opacity = '0';
+    const toMsMax = (s) =>
+      Math.max(
+        ...String(s || '0s')
+          .split(',')
+          .map((v) => v.trim())
+          .filter(Boolean)
+          .map((v) =>
+            v.endsWith('ms') ? parseFloat(v) : parseFloat(v) * 1000,
+          ),
+        0,
+      );
 
-    nextImg.style.transform = 'translateX(0)';
-    nextImg.style.opacity = '1';
+    const total = toMsMax(cs.transitionDuration) + toMsMax(cs.transitionDelay);
+
+    let done = false;
+
+    let timerId = null;
 
     const finish = () => {
+      if (done) return;
+      done = true;
+
+      if (timerId) window.clearTimeout(timerId);
+
       // Remove old image
-      if (activeImg && activeImg.parentNode) {
-        activeImg.parentNode.removeChild(activeImg);
-      }
+      if (activeImg?.parentNode) activeImg.remove();
 
       nextImg.classList.add('is-active');
       nextImg.style.transform = '';
       nextImg.style.opacity = '';
+
       activeImg = nextImg;
 
       isAnimating = false;
     };
 
+    // If no animation, finish immediately
+    if (total === 0 || cs.transitionProperty === 'none') {
+      finish();
+      return;
+    }
+
+    // Force reflow so initial styles apply
+    nextImg.getBoundingClientRect();
+
+    // Animate: slide out old image, slide in new image
+    activeImg.style.transform = `translateX(${-direction * 18}%)`;
+    activeImg.style.opacity = '0';
+
+    nextImg.style.transform = 'translateX(0)';
+    nextImg.style.opacity = '1';
+
     nextImg.addEventListener('transitionend', finish, { once: true });
+    nextImg.addEventListener('transitioncancel', finish, { once: true });
+
+    // Safety timeout in case transitionend doesn't fire
+    timerId = window.setTimeout(finish, total + 80);
+  }
+
+  function ensureActiveImg() {
+    if (!activeImg || !activeImg.parentNode) {
+      activeImg = overlay.querySelector('.gallery-lightbox__img.is-active');
+
+      if (!activeImg) {
+        activeImg = createImg('', '');
+        activeImg.classList.add('is-active');
+        stage.appendChild(activeImg);
+      }
+    }
   }
 
   function setSlide(
     i,
     { updateUrl = true, animate = false, direction = 1 } = {},
   ) {
+    ensureActiveImg();
+
     index = (i + items.length) % items.length;
 
     const btn = items[index];
@@ -212,10 +259,16 @@ export function initGalleryLightbox() {
 
   function close({ updateUrl = true } = {}) {
     isOpen = false;
+    isAnimating = false;
 
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     lockBody(false);
+
+    // Remove any extra imgs, keep only activeImg element reference
+    stage.querySelectorAll('.gallery-lightbox__img').forEach((img) => {
+      if (img !== activeImg) img.remove();
+    });
 
     // Keep activeImg element, just clear its src to release memory
     activeImg.src = '';
