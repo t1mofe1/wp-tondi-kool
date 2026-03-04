@@ -4,4 +4,42 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
+
+  .front-gallery__item {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: none;
+    cursor: pointer;
+    display: block;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+
+    background-color: var(--wp--preset--color--hall);
+
+    translate: 0 16px;
+    scale: 0.98;
+    transition:
+      translate 0.45s ease-out,
+      scale 0.45s ease-out;
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      transition: scale 0.25s ease-out;
+    }
+
+    &:hover img,
+    &:focus-visible img {
+      scale: 1.05;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #f5dca5;
+      outline-offset: 3px;
+    }
+  }
 }
