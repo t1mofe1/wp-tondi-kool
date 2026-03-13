@@ -242,7 +242,6 @@ acf_add_local_field_group([
             'name' => 'footer_columns',
             'type' => 'repeater',
             'min' => 1,
-            'max' => 4,
             'required' => true,
             'layout' => 'row',
             'button_label' => 'Lisa veerg',
