@@ -16,12 +16,12 @@
     "src": "assets/images/Muster_Header.svg"
   },
   "assets/js/main.js": {
-    "file": "assets/main-BxDYozK2.js",
+    "file": "assets/main-DWoHWS0k.js",
     "name": "main",
     "src": "assets/js/main.js",
     "isEntry": true,
     "css": [
-      "assets/main-x8nKaY40.css"
+      "assets/main-BjDIgN3Q.css"
     ],
     "assets": [
       "assets/Muster_Footer-DdCJoCye.svg",
