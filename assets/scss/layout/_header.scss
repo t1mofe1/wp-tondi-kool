@@ -234,50 +234,174 @@
     }
 
     .menu {
+      display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      padding: 0;
+      gap: $space-2;
+
       margin: 0;
-      width: 100%;
+      padding: $space-4;
+      list-style: none;
+
+      border-radius: 12px;
+      background-color: #ede6dd;
 
       > li {
+        width: 100%;
         position: static;
 
-        // Hide dropdown arrow on mobile
-        &.menu-item-has-children > a::after {
-          content: none;
+        > a {
+          display: block;
+          width: 100%;
+          padding: $space-1 $space-3;
+          border-radius: 14px;
+
+          color: var(--wp--preset--color--hall);
+
+          white-space: normal;
+          overflow-wrap: anywhere;
+          word-break: normal;
+
+          text-decoration: none;
+          font-size: 1.25rem;
+          font-weight: bold;
+          text-transform: uppercase;
+          min-width: 0;
         }
 
-        > a {
-          width: 100%;
-          justify-content: flex-start;
-          border-radius: 0;
-          padding: 0.75rem 0;
+        &:hover > a,
+        &:focus-within > a {
+          background-color: var(--wp--preset--color--helekollane);
+        }
+
+        &.current-menu-item > a,
+        &.current-menu-ancestor > a {
+          background-color: var(--wp--preset--color--helekollane);
         }
       }
     }
 
+    .menu-item-has-children {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      column-gap: $space-1;
+      row-gap: $space-1;
+      min-width: 0;
+
+      > a {
+        grid-column: 1;
+        grid-row: 1;
+
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-self: stretch;
+
+        &::after {
+          content: none !important;
+        }
+      }
+
+      > .submenu-toggle {
+        grid-column: 2;
+        grid-row: 1;
+
+        width: 32px;
+        height: 32px;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+
+        color: var(--wp--preset--color--hall);
+        cursor: pointer;
+
+        transition: background-color 0.15s ease;
+
+        &:hover,
+        &:focus-visible {
+          background-color: rgba(0, 0, 0, 0.06);
+          outline: none;
+        }
+      }
+
+      > .submenu-toggle .submenu-toggle__icon {
+        font-size: 1.2rem;
+        line-height: 1;
+        transition: transform 0.15s ease;
+      }
+
+      &.submenu-open > .submenu-toggle .submenu-toggle__icon {
+        transform: rotate(180deg);
+      }
+
+      > .sub-menu {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+    }
+
     .sub-menu {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+
+      list-style: none;
+      gap: $space-1;
+      margin: 0;
+      padding-inline: $space-4;
+      padding-block: 0;
+
+      overflow: hidden;
+      height: 0;
+      transition: height 0.22s ease;
+      will-change: height;
+
       opacity: 1;
       visibility: visible;
-
       position: static;
       left: auto;
       top: auto;
-      transform: translateY(0);
-
+      transform: none;
       box-shadow: none;
       background: transparent;
-      padding: 0.25rem 0 0.25rem 1.5rem;
-      margin: 0;
-      list-style: none;
+      width: 100%;
 
-      li a {
-        padding: 0.35rem 0;
-        border-radius: 0;
+      &[aria-hidden='true'] {
+        visibility: hidden;
+      }
+
+      li {
+        position: static;
+        margin: 0;
+      }
+
+      li > a {
+        display: block;
+        width: 100%;
+        padding: $space-1 $space-2;
+        border-radius: 14px;
+
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: bold;
         text-transform: none;
         color: var(--wp--preset--color--hall);
+      }
+
+      li:hover > a,
+      li:focus-within > a {
+        background-color: var(--wp--preset--color--helekollane);
       }
 
       .menu-item-has-children > a::after {
@@ -285,7 +409,7 @@
       }
 
       .sub-menu {
-        padding-left: 1.5rem;
+        padding-inline: $space-3;
       }
     }
   }
