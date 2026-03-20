@@ -197,6 +197,10 @@
   background-size: auto $height;
 }
 
+.submenu-toggle {
+  display: none;
+}
+
 @include mq('<=desktop') {
   .nav-toggle {
     display: block;
