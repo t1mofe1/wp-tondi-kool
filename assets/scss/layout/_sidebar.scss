@@ -48,7 +48,6 @@
         text-decoration: none;
         font-size: 1.25rem;
         font-weight: bold;
-        text-transform: uppercase;
       }
 
       &:hover > a,
@@ -78,6 +77,8 @@
 
           width: 100%;
           justify-self: stretch;
+
+          text-transform: uppercase;
         }
 
         > .sub-sidebar__toggle {
