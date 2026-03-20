@@ -8,6 +8,10 @@
   gap: $space-12;
   margin-block: $space-6;
 
+  .page-title {
+    font-size: clamp(1rem, 3vw, 2rem);
+  }
+
   .sub-content {
     flex: 1;
   }
