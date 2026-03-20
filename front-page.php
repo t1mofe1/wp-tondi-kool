@@ -1,8 +1,5 @@
 <?php
 
-use Tondi_Fastlinks_Walker;
-use WP_Query;
-
 get_header();
 
 ?>
