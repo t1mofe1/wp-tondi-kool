@@ -1,6 +1,21 @@
 @use '../variables' as *;
 @use '../mixins' as *;
 
+.more_button {
+  border: none;
+
+  font-weight: bold;
+  font-size: $space-6;
+  text-transform: uppercase;
+
+  margin-top: $space-8;
+  padding-inline: $space-8;
+  border-radius: 12px;
+
+  background-color: var(--wp--preset--color--helekollane);
+  color: var(--wp--preset--color--primary);
+}
+
 .home-highlights {
   display: flex;
   justify-content: center;
@@ -240,21 +255,6 @@
         }
       }
     }
-
-    .read-more-news-btn {
-      border: none;
-
-      font-weight: bold;
-      font-size: $space-6;
-      text-transform: uppercase;
-
-      margin-top: $space-8;
-      padding-inline: $space-8;
-      border-radius: 12px;
-
-      background-color: var(--wp--preset--color--helekollane);
-      color: var(--wp--preset--color--primary);
-    }
   }
 }
 
@@ -462,14 +462,6 @@
           );
         }
       }
-    }
-
-    &__more {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.5rem 0.9rem;
-      border-radius: 999px;
-      text-decoration: none;
     }
   }
 }

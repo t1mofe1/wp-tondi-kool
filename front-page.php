@@ -85,7 +85,7 @@ get_header();
                         wp_reset_postdata(); ?>
                     </ul>
 
-                    <a class="read-more-news-btn" href="<?php echo esc_url($news_more_url); ?>">
+                    <a class="more_button" href="<?php echo esc_url($news_more_url); ?>">
                         <?php esc_html_e('Loe veel', 'tondi'); ?>
                     </a>
                 <?php else: ?>
@@ -298,13 +298,11 @@ get_header();
 
                 <?php $gallery_page = get_page_by_path('galerii'); ?>
                 <?php if ($gallery_page): ?>
-                    <div class="front-gallery__more_wrap">
-                        <a
-                            class="front-gallery__more_btn"
-                            href="<?php echo esc_url($gallery_page ? get_permalink($gallery_page) : home_url('/')); ?>">
-                            <?php esc_html_e('Vaata rohkem', 'tondi'); ?>
-                        </a>
-                    </div>
+                    <a
+                        class="more_button"
+                        href="<?php echo esc_url($gallery_page ? get_permalink($gallery_page) : home_url('/')); ?>">
+                        <?php esc_html_e('Vaata rohkem', 'tondi'); ?>
+                    </a>
                 <?php endif; ?>
 
                 <!-- Lightbox overlay -->
