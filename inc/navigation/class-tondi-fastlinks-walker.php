@@ -39,14 +39,14 @@ class Tondi_Fastlinks_Walker extends Walker_Nav_Menu
 
             if ($icon_html) $output .= $icon_html;
 
-            $output .= '<span class="fastlinks-menu-text">' . esc_html($title) . '</span>';
+            $output .= '<span class="fastlinks-menu-tooltip">' . esc_html($title) . '</span>';
             $output .= '</button>';
         } else {
             $output .= '<a class="fastlinks-menu-link" href="' . esc_url($url) . '">';
 
             if ($icon_html) $output .= $icon_html;
 
-            $output .= '<span class="fastlinks-menu-text">' . esc_html($title) . '</span>';
+            $output .= '<span class="fastlinks-menu-tooltip">' . esc_html($title) . '</span>';
             $output .= '</a>';
         }
 

@@ -488,8 +488,6 @@ get_header();
         let lastY = window.scrollY;
         let ticking = false;
 
-        fastlinksMenu.classList.remove('is-hidden');
-
         window.addEventListener('scroll', function() {
             if (ticking) return;
 
@@ -521,50 +519,6 @@ get_header();
             ticking = true;
         }, {
             passive: true
-        });
-
-        // Fastlinks mobile overlay
-        fastlinksMenu.addEventListener('click', function() {
-            if (!mobileQuery.matches) {
-                return;
-            }
-
-            const isOpen = fastlinksMenu.classList.contains('open');
-
-            if (isOpen) {
-                fastlinksMenu.classList.remove('open');
-                fastlinksMenu.setAttribute('aria-expanded', 'false');
-
-                const overlay = document.getElementById('fastlinks-overlay');
-                if (overlay) {
-                    document.body.removeChild(overlay);
-                    document.body.classList.remove('lock');
-                }
-            } else {
-                const overlay = document.createElement('div');
-                overlay.id = 'fastlinks-overlay';
-
-                overlay.style.position = 'fixed';
-                overlay.style.top = '0';
-                overlay.style.left = '0';
-                overlay.style.width = '100%';
-                overlay.style.height = '100%';
-                overlay.style.zIndex = '500';
-                overlay.style.background = 'rgba(0, 0, 0, 0.35)';
-
-                overlay.addEventListener('click', function() {
-                    fastlinksMenu.classList.remove('open');
-                    fastlinksMenu.setAttribute('aria-expanded', 'false');
-                    document.body.removeChild(overlay);
-                    document.body.classList.remove('lock');
-                });
-
-                document.body.appendChild(overlay);
-                document.body.classList.add('lock');
-
-                fastlinksMenu.classList.add('open');
-                fastlinksMenu.setAttribute('aria-expanded', 'true');
-            }
         });
     });
 </script>
