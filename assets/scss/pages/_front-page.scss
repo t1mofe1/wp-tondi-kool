@@ -92,6 +92,10 @@
           .fastlinks-menu-icon {
             $iconSize: 48px;
 
+            @include mq('<tablet') {
+              $iconSize: 36px;
+            }
+
             min-width: $iconSize;
             width: $iconSize;
             height: $iconSize;
@@ -136,15 +140,23 @@
 
       &-menu {
         $menuPadding: $space-2;
-        padding-inline: $menuPadding;
-        padding-block: $menuPadding * 1.5;
+        $linkPadding: $space-2;
 
         display: flex;
         flex-direction: row;
         width: 100%;
 
-        $linkPadding: $space-2;
+        padding-inline: $menuPadding;
+        padding-block: $menuPadding * 1.5;
+
         gap: $linkPadding * 2;
+
+        @include mq('<=tablet') {
+          width: calc(100dvw - ($menuPadding * 2));
+
+          gap: unset;
+          justify-content: space-between;
+        }
 
         .fastlinks-menu-link {
           position: relative;
@@ -152,6 +164,10 @@
           font-size: inherit;
 
           padding: $linkPadding;
+
+          @include mq('<=tablet') {
+            width: max-content;
+          }
 
           .fastlinks-menu-tooltip {
             position: absolute;
@@ -173,7 +189,15 @@
           &:focus-visible .fastlinks-menu-tooltip {
             opacity: 1;
           }
+
         }
+
+        li:first-child .fastlinks-menu-tooltip {
+          left: 100%;
+        }
+        // li:last-child .fastlinks-menu-tooltip {
+        //   left: 0;
+        // }
       }
 
       &:has(.fastlinks-menu.is-hidden) {
