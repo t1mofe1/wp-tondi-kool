@@ -350,6 +350,7 @@
     &__item {
       display: flex;
       justify-content: space-between;
+      flex-direction: column;
       gap: $space-6;
 
       .home-calendar__info {
@@ -375,7 +376,6 @@
 
       .home-calendar__meta {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
         align-items: flex-end;
 
