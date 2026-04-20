@@ -376,8 +376,9 @@
 
       .home-calendar__meta {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         align-items: flex-end;
+        gap: $space-2;
 
         .home-calendar__date-group,
         .home-calendar__time-group {
