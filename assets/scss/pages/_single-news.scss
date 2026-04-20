@@ -31,6 +31,9 @@
 .single-news__featured {
   margin: 0 0 $space-8;
 
+  /* keep long content readable */
+  max-width: 75ch;
+
   @include mq('<=tablet') {
     margin-bottom: $space-6;
   }
