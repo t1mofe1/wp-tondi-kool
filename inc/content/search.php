@@ -1,7 +1,5 @@
 <?php
 
-use WP_Query;
-
 /**
  * Highlight search query inside plain text.
  * Safe: works on text (not HTML), escapes output, wraps matches in <mark>.
@@ -52,7 +50,7 @@ function tondi_live_search(): void
         wp_send_json_success(['items' => []]);
     }
 
-    $query = new WP_Query([
+    $query = new \WP_Query([
         'post_type'              => ['worker', 'news', 'page', 'post'],
         'post_status'            => 'publish',
         'posts_per_page'         => 8,

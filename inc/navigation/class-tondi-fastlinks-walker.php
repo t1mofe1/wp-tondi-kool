@@ -1,12 +1,10 @@
 <?php
 
-use Walker_Nav_Menu;
-
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class Tondi_Fastlinks_Walker extends Walker_Nav_Menu
+class Tondi_Fastlinks_Walker extends \Walker_Nav_Menu
 {
     public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
     {
