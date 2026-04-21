@@ -51,16 +51,6 @@ get_header();
                                         <?php the_title(); ?>
                                     </h2>
 
-                                    <? /* <p class="news-card-excerpt">
-                                    <?php
-                                    if (has_excerpt()) {
-                                        echo esc_html(get_the_excerpt());
-                                    } else {
-                                        echo esc_html(wp_trim_words(wp_strip_all_tags(get_the_content('')), 24));
-                                    }
-                                    ?>
-                                </p> */ ?>
-
                                     <div class="news-card-image-wrapper">
                                         <?php
                                         if (has_post_thumbnail()) {
@@ -75,11 +65,6 @@ get_header();
                                         }
                                         ?>
                                     </div>
-
-                                    <? /* <a class="news-card-more" href="<?php the_permalink(); ?>">
-                                    <?php esc_html_e('Loe edasi...', 'tondi'); ?>
-                                    </a> */ ?>
-
                                 </a>
                             </li>
                         <?php endwhile;
