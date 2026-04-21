@@ -46,13 +46,12 @@ get_header();
                         <?php while ($news_q->have_posts()):
                             $news_q->the_post(); ?>
                             <li <?php post_class('news-card'); ?>>
-                                <h2 class="news-card-title">
-                                    <a href="<?php the_permalink(); ?>">
+                                <a href="<?php the_permalink(); ?>">
+                                    <h2 class="news-card-title">
                                         <?php the_title(); ?>
-                                    </a>
-                                </h2>
+                                    </h2>
 
-                                <!-- <p class="news-card-excerpt">
+                                    <? /* <p class="news-card-excerpt">
                                     <?php
                                     if (has_excerpt()) {
                                         echo esc_html(get_the_excerpt());
@@ -60,26 +59,28 @@ get_header();
                                         echo esc_html(wp_trim_words(wp_strip_all_tags(get_the_content('')), 24));
                                     }
                                     ?>
-                                </p> -->
+                                </p> */ ?>
 
-                                <div class="news-card-image-wrapper">
-                                    <?php
-                                    if (has_post_thumbnail()) {
-                                        the_post_thumbnail('news_card', [
-                                            'alt' => the_title_attribute(['echo' => false]),
-                                            'loading' => 'lazy',
-                                            'decoding' => 'async',
-                                        ]);
-                                    } else {
-                                        // Optional placeholder image
-                                        echo '<div class="news-card-image-placeholder" aria-hidden="true"></div>';
-                                    }
-                                    ?>
-                                </div>
+                                    <div class="news-card-image-wrapper">
+                                        <?php
+                                        if (has_post_thumbnail()) {
+                                            the_post_thumbnail('news_card', [
+                                                'alt' => the_title_attribute(['echo' => false]),
+                                                'loading' => 'lazy',
+                                                'decoding' => 'async',
+                                            ]);
+                                        } else {
+                                            // Optional placeholder image
+                                            echo '<div class="news-card-image-placeholder" aria-hidden="true"></div>';
+                                        }
+                                        ?>
+                                    </div>
 
-                                <!-- <a class="news-card-more" href="<?php the_permalink(); ?>">
+                                    <? /* <a class="news-card-more" href="<?php the_permalink(); ?>">
                                     <?php esc_html_e('Loe edasi...', 'tondi'); ?>
-                                </a> -->
+                                    </a> */ ?>
+
+                                </a>
                             </li>
                         <?php endwhile;
                         wp_reset_postdata(); ?>
