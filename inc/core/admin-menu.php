@@ -18,9 +18,10 @@ add_action('admin_menu', function () {
     remove_submenu_page('options-general.php', 'options-media.php'); // Media
     remove_submenu_page('options-general.php', 'options-permalink.php'); // Permalinks
 
-    // Remove ACF and FileBird menus
+    // Remove ACF, FileBird and Wordfence menus
     remove_menu_page('edit.php?post_type=acf-field-group');
     remove_menu_page('filebird-settings');
+    remove_menu_page('Wordfence');
 
     // Remove "Appearance" menu
     remove_menu_page('themes.php');
