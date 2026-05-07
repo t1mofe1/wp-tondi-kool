@@ -1,7 +1,5 @@
 <?php
 
-use WP_Query;
-
 if (!defined('ABSPATH')) {
     exit;
 }

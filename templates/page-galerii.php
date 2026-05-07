@@ -40,7 +40,9 @@ get_header();
 
                             <?php
 
-                            $folder_id = (int) get_field('front_page_gallery_folder', 'option');
+                            $folder_id = function_exists('get_field')
+                                ? (int) get_field('front_page_gallery_folder', 'option')
+                                : 0;
 
                             $attachment_ids = [];
                             if ($folder_id > 0 && class_exists(\FileBird\Classes\Helpers::class)) {

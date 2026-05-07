@@ -12,7 +12,9 @@ add_action('pre_get_posts', function ($q) {
 
     if ($q->is_post_type_archive('news')) {
         // ACF option (stored in wp_options)
-        $ppp = (int) get_field('news_archive_posts_per_page', 'option');
+        $ppp = function_exists('get_field')
+            ? (int) get_field('news_archive_posts_per_page', 'option')
+            : 0;
 
         // fallback
         if ($ppp < 1) {

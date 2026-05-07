@@ -214,8 +214,14 @@ get_header();
 
                 <?php
 
-                $folder_id = (int) get_field('front_page_gallery_folder', 'option');
-                $max_slots = (int) get_field('front_page_gallery_limit', 'option') ?: 6;
+                $folder_id = function_exists('get_field')
+                    ? (int) get_field('front_page_gallery_folder', 'option')
+                    : 0;
+
+                $max_slots = function_exists('get_field')
+                    ? (int) get_field('front_page_gallery_limit', 'option')
+                    : 6;
+
                 if ($max_slots <= 0) {
                     $max_slots = 6;
                 }
@@ -328,7 +334,12 @@ get_header();
                 <?php esc_html_e('Projektid', 'tondi'); ?>
             </h2>
 
-            <?php if (!$projects = get_field('projects_columns', 'option')): ?>
+            <?php $projects = function_exists('get_field')
+                ? get_field('projects_columns', 'option')
+                : false;
+            ?>
+
+            <?php if (empty($projects)) : ?>
                 <p>
                     <?php esc_html_e('Projekte ei leitud.', 'tondi'); ?>
                 </p>

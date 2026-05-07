@@ -14,13 +14,15 @@ class Tondi_Fastlinks_Walker extends \Walker_Nav_Menu
 
         $is_search = in_array('fastlinks-is-search', $classes, true);
 
+        $icon_html = '';
+
         $icon_id = 0;
         if (function_exists('get_field') && isset($item->ID)) {
             $icon_id = (int) get_field('menu_icon', $item->ID);
         }
 
         $title = isset($item->title) ? $item->title : '';
-        $url = isset($item->url) ? $item->url : '';
+        $url   = isset($item->url) ? $item->url : '';
 
         if ($icon_id) {
             $icon_html = wp_get_attachment_image($icon_id, 'thumbnail', false, [

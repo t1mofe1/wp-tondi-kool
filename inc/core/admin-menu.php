@@ -2,7 +2,9 @@
 
 // Remove unnecessary admin menu items
 add_action('admin_menu', function () {
-    $hide_menus = get_field('security_hide_extra_admin_menus', 'option');
+    $hide_menus = function_exists('get_field')
+        ? get_field('security_hide_extra_admin_menus', 'option')
+        : false;
 
     if (!$hide_menus) {
         return;
@@ -38,11 +40,14 @@ add_action('admin_menu', function () {
 
 // Remove unncessary admin bar items
 add_action('admin_bar_menu', function ($wp_admin_bar) {
-    $hide_menus = get_field('security_hide_extra_admin_menus', 'option');
+    $hide_menus = function_exists('get_field')
+        ? get_field('security_hide_extra_admin_menus', 'option')
+        : false;
 
     if (!$hide_menus) {
         return;
     }
+
     // Remove "New" menu items
     $wp_admin_bar->remove_node('new-post');
     $wp_admin_bar->remove_node('new-user');
@@ -59,7 +64,9 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 
 // Add custom admin menu page for theme settings
 add_action('admin_menu', function () {
-    $hide_menus = get_field('security_hide_extra_admin_menus', 'option');
+    $hide_menus = function_exists('get_field')
+        ? get_field('security_hide_extra_admin_menus', 'option')
+        : false;
 
     if (!$hide_menus) {
         return;

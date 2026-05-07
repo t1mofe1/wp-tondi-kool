@@ -2,9 +2,13 @@
 
 echo '<!-- Footer -->';
 
-$columns = get_field('footer_columns', 'option') ?: [];
+$columns = function_exists('get_field')
+    ? (get_field('footer_columns', 'option') ?: [])
+    : [];
 
-$logo_caption_text = get_field('footer_bottom_content', 'option') ?: '';
+$logo_caption_text = function_exists('get_field')
+    ? (get_field('footer_bottom_content', 'option') ?: '')
+    : '';
 
 /**
  * Footer link icon HTML
@@ -109,11 +113,11 @@ if (!function_exists('tondi_footer_icon_html')) {
                                                             class="footer-link__anchor"
                                                             href="<?php echo esc_url($url); ?>"
                                                             target="<?php echo esc_attr($target); ?>"
-                                                            <?php (!empty($rel) ? ' rel="' . esc_attr(implode(' ', $rel)) . '"' : ''); ?>>
+                                                            <?php echo !empty($rel) ? ' rel="' . esc_attr(implode(' ', $rel)) . '"' : ''; ?>
                                                             <?php echo $icon_html; ?>
 
                                                             <span class="footer-link__label">
-                                                                <?php echo esc_html($title); ?>
+                                                            <?php echo esc_html($title); ?>
                                                             </span>
                                                         </a>
                                                     </li>
