@@ -98,6 +98,61 @@ $q = new WP_Query($args);
 
         let timer = null;
         let controller = null;
+        let resizeTimer = null;
+
+        function equalizeCardRows() {
+            const grid = results.querySelector('.contacts-grid');
+            if (!grid) return;
+
+            const cards = Array.from(grid.querySelectorAll('.person'));
+            if (!cards.length) return;
+
+            // Reset first so measurements are based on natural content height.
+            for (const card of cards) {
+                card.querySelector('.person__name')?.style.removeProperty('min-height');
+                card.querySelector('.person__badges')?.style.removeProperty('min-height');
+                card.querySelector('.person__role')?.style.removeProperty('min-height');
+            }
+
+            const rows = new Map();
+            for (const card of cards) {
+                const key = card.offsetTop;
+                if (!rows.has(key)) rows.set(key, []);
+                rows.get(key).push(card);
+            }
+
+            for (const rowCards of rows.values()) {
+                let nameMax = 0;
+                let badgesMax = 0;
+                let roleMax = 0;
+
+                for (const card of rowCards) {
+                    const nameEl = card.querySelector('.person__name');
+                    const badgesEl = card.querySelector('.person__badges');
+                    const roleEl = card.querySelector('.person__role');
+
+                    nameMax = Math.max(nameMax, Math.ceil(nameEl?.getBoundingClientRect().height || 0));
+                    badgesMax = Math.max(badgesMax, Math.ceil(badgesEl?.getBoundingClientRect().height || 0));
+                    roleMax = Math.max(roleMax, Math.ceil(roleEl?.getBoundingClientRect().height || 0));
+                }
+
+                for (const card of rowCards) {
+                    const nameEl = card.querySelector('.person__name');
+                    const badgesEl = card.querySelector('.person__badges');
+                    const roleEl = card.querySelector('.person__role');
+
+                    if (nameEl && nameMax) nameEl.style.minHeight = `${nameMax}px`;
+                    if (badgesEl && badgesMax) badgesEl.style.minHeight = `${badgesMax}px`;
+                    if (roleEl && roleMax) roleEl.style.minHeight = `${roleMax}px`;
+                }
+            }
+        }
+
+        function scheduleEqualize() {
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(equalizeCardRows);
+            });
+        }
 
         function syncClear() {
             if (!clearBtn) return;
@@ -121,7 +176,9 @@ $q = new WP_Query($args);
 
             try {
                 const res = await fetch(url, {
-                    headers: { 'X-Requested-With': 'fetch' },
+                    headers: {
+                        'X-Requested-With': 'fetch'
+                    },
                     signal: controller.signal,
                 });
 
@@ -129,7 +186,10 @@ $q = new WP_Query($args);
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const next = doc.getElementById('contacts-results');
 
-                if (next) results.innerHTML = next.innerHTML;
+                if (next) {
+                    results.innerHTML = next.innerHTML;
+                    scheduleEqualize();
+                }
             } catch (e) {
                 if (e.name !== 'AbortError') console.warn(e);
             } finally {
@@ -145,6 +205,7 @@ $q = new WP_Query($args);
 
         // init clear state
         syncClear();
+        scheduleEqualize();
 
         // realtime
         q.addEventListener('input', () => {
@@ -164,6 +225,13 @@ $q = new WP_Query($args);
 
         // handle back/forward
         window.addEventListener('popstate', () => updateResults(false));
+
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(scheduleEqualize, 120);
+        });
+
+        window.addEventListener('load', scheduleEqualize);
     });
 </script>
 

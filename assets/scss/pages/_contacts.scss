@@ -201,7 +201,7 @@
   padding: 2rem 1.5rem;
   gap: 0.25rem;
 
-  min-height: 380px;
+  height: 100%;
 
   text-align: center;
   text-decoration: none !important;
@@ -261,12 +261,18 @@
    Text content
    ============================ */
 
+.person__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .person__name {
-  display: -webkit-box;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 
   line-height: 1.12;
   letter-spacing: 0.06em;
@@ -275,15 +281,16 @@
   color: #0f172a;
 
   max-width: 18ch;
-  margin-block: 0 0.85rem;
+  padding-block: 0 1.25rem;
+  margin-block: 0;
 }
 
 .person__badges {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.15rem;
+  margin-bottom: 1.5rem;
 }
 
 .person__badge {
@@ -305,11 +312,9 @@
 }
 
 .person__role {
-  display: -webkit-box;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   font-size: 1.05rem;
   font-weight: 600;
@@ -319,6 +324,7 @@
   margin-block: 0;
 
   max-width: 26ch;
+  margin-top: auto;
 }
 
 /* =========================
