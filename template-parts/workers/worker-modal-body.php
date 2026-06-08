@@ -8,6 +8,8 @@ $email = (string) tondi_worker_email($post_id);
 $phones = (array) tondi_worker_phones($post_id);
 $notes = (string) tondi_worker_notes($post_id);
 
+$obfuscated_email = str_replace('@', ' [at] ', $email);
+
 $terms = get_the_terms($post_id, 'worker_department');
 $dept_names = (!is_wp_error($terms) && !empty($terms)) ? wp_list_pluck($terms, 'name') : [];
 
@@ -73,7 +75,7 @@ $phones = array_values(array_filter($phones, function ($p) {
                 </svg>
 
                 <a class="worker_modal__link" href="mailto:<?php echo esc_attr($email); ?>">
-                    <?php echo esc_html($email); ?>
+                    <?php echo esc_html($obfuscated_email); ?>
                 </a>
             </div>
         <?php endif; ?>
