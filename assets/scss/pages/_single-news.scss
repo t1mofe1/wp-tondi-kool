@@ -202,3 +202,79 @@
     outline-offset: 3px;
   }
 }
+
+/* ============================
+   Older / newer post navigation
+   ============================ */
+
+.single-news__nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+
+  // .single-news__footer already draws the rule above this block; a second
+  // border-top here rendered as two stacked dividers.
+  margin-bottom: 1.5rem;
+}
+
+.single-news__nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+
+  padding: 0.9rem 1.1rem;
+  border-radius: 14px;
+
+  background: var(--wp--preset--color--white);
+  border: 1px solid rgba(79, 74, 62, 0.14);
+
+  color: var(--wp--preset--color--hall);
+  text-decoration: none;
+
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--wp--preset--color--helekollane);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--wp--preset--color--helekollane);
+    outline-offset: 3px;
+  }
+
+  /* Newer post sits on the right and reads right-aligned. */
+  &--next {
+    grid-column: 2;
+    text-align: right;
+  }
+}
+
+.single-news__nav-label {
+  font-size: 0.9rem;
+  color: rgba(79, 74, 62, 0.7);
+}
+
+.single-news__nav-title {
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+.single-news__nav-spacer {
+  grid-column: 1;
+}
+
+@media (max-width: 620px) {
+  .single-news__nav {
+    grid-template-columns: 1fr;
+  }
+
+  .single-news__nav-link--next {
+    grid-column: 1;
+    text-align: left;
+  }
+
+  .single-news__nav-spacer {
+    display: none;
+  }
+}
