@@ -8,6 +8,7 @@ require_once __DIR__ . '/core/admin-menu.php';
 require_once __DIR__ . '/core/assets.php';
 require_once __DIR__ . '/core/performance.php';
 require_once __DIR__ . '/core/secure-mistakes.php';
+require_once __DIR__ . '/core/sitemaps.php';
 require_once __DIR__ . '/core/theme-setup.php';
 require_once __DIR__ . '/core/uploads.php';
 
