@@ -1,3 +1,6 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
 /* ============================
    News cards (shared)
    ============================ */
@@ -41,7 +44,7 @@
   margin: 0;
   line-height: 1.1;
 
-  word-break: break-word;
+  overflow-wrap: break-word;
 
   a {
     text-decoration: none;
@@ -53,11 +56,18 @@
   }
 }
 
+.news-card-date {
+  margin: 0;
+
+  font-size: 0.9rem;
+  color: rgba(79, 74, 62, 0.7);
+}
+
 .news-card-excerpt {
   margin: 0;
   line-height: 1.55;
 
-  word-break: break-word;
+  overflow-wrap: break-word;
 
   display: -webkit-box;
   line-clamp: 3;
@@ -106,7 +116,35 @@
 }
 
 .news-archive {
-  padding: 2.5rem 0 3.5rem;
+  padding: 1.5rem 0 3.5rem;
+}
+
+.news-archive__layout {
+  display: flex;
+  align-items: flex-start;
+
+  gap: $space-8;
+  margin-block: $space-6;
+}
+
+.news-archive__main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.news-archive__main .news-cards {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+}
+
+// cqi not vw: the sidebar makes the card narrowest at the widest viewports, so
+// vw sized longest-title text up exactly where it had least room. The 0.95rem
+// floor is what a 20-character title needs to fit the 245px desktop card.
+.news-archive__main .news-card {
+  container-type: inline-size;
+}
+
+.news-archive__main .news-card-title {
+  font-size: clamp(0.95rem, 6.2cqi, 1.3rem);
 }
 
 .news-archive__header {
@@ -115,6 +153,30 @@
 
 .news-archive__title {
   margin: 0;
+  text-wrap: balance;
+}
+
+.news-archive__count {
+  margin: $space-2 0 0;
+
+  font-size: 0.95rem;
+  color: rgba(79, 74, 62, 0.7);
+}
+
+.news-archive__reset {
+  margin-top: $space-4;
+}
+
+@include mq('<=desktop') {
+  .news-archive__layout {
+    flex-direction: column;
+
+    // Cross axis is now horizontal; the row's flex-start would shrink both
+    // children to content width and leave the grid narrower than the container.
+    align-items: stretch;
+
+    gap: $space-6;
+  }
 }
 
 .pagination {

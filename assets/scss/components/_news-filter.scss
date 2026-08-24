@@ -1,0 +1,218 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.news-filter {
+  width: clamp(220px, 22vw, 300px);
+
+  &__title {
+    margin: 0 0 $space-2;
+
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  // Held open on desktop by the inline script in archive-filter.php.
+  &__panel {
+    > summary {
+      display: none;
+    }
+  }
+
+  &__panel-summary {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    padding: $space-3 $space-4;
+    border-radius: 12px;
+
+    background-color: #ede6dd;
+    color: var(--wp--preset--color--hall);
+
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+
+    &::after {
+      content: '';
+
+      flex: 0 0 auto;
+      margin-left: auto;
+
+      width: 0.5em;
+      height: 0.5em;
+
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+
+      transform: rotate(45deg) translateY(-0.1em);
+      transition: transform 0.15s ease;
+    }
+  }
+
+  &__panel[open] > &__panel-summary::after {
+    transform: rotate(225deg) translateY(-0.1em);
+  }
+
+  &__panel-label {
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__panel-state {
+    font-size: 0.95rem;
+    color: rgba(79, 74, 62, 0.7);
+  }
+
+  &__nav {
+    padding: $space-3;
+    border-radius: 12px;
+    background-color: #ede6dd;
+  }
+
+  &__years,
+  &__months {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
+    gap: $space-1;
+
+    list-style: none;
+  }
+
+  &__all {
+    padding-bottom: $space-2;
+    margin-bottom: $space-1;
+    border-bottom: 1px solid rgba(79, 74, 62, 0.16);
+  }
+
+  &__link,
+  &__summary {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    padding: $space-1 $space-3;
+    border-radius: 14px;
+
+    color: var(--wp--preset--color--hall);
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--wp--preset--color--helekollane);
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+      outline-offset: 1px;
+    }
+  }
+
+  &__label {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+  }
+
+  &__count {
+    flex: 0 0 auto;
+
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    color: rgba(79, 74, 62, 0.7);
+
+    &::before {
+      content: '(';
+    }
+
+    &::after {
+      content: ')';
+    }
+  }
+
+  &__summary {
+    font-size: 1.25rem;
+    font-weight: bold;
+
+    // Native marker off in every engine; chevron is the ::after below.
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '';
+
+      flex: 0 0 auto;
+      width: 0.45em;
+      height: 0.45em;
+
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+
+      transform: rotate(45deg) translateY(-0.1em);
+      transition: transform 0.15s ease;
+    }
+  }
+
+  &__details[open] > &__summary::after {
+    transform: rotate(225deg) translateY(-0.1em);
+  }
+
+  &__months {
+    padding: $space-1 0 $space-2 $space-3;
+  }
+
+  &__link {
+    font-size: 1.05rem;
+
+    &--all {
+      font-style: italic;
+    }
+
+    &.is-active {
+      background-color: var(--wp--preset--color--helekollane);
+      font-weight: 700;
+      color: var(--wp--preset--color--tumehall);
+    }
+  }
+
+  &__year.is-current > &__details > &__summary {
+    color: var(--wp--preset--color--tumehall);
+  }
+}
+
+@include mq('<=desktop') {
+  .news-filter {
+    width: 100%;
+
+    // Summary takes over as the heading.
+    &__title {
+      display: none;
+    }
+
+    &__panel > summary {
+      display: flex;
+    }
+
+    &__nav {
+      margin-top: $space-2;
+    }
+  }
+}
