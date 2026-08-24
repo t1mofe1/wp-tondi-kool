@@ -1,0 +1,100 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.error-404 {
+  padding: $space-16 0;
+
+  &__inner {
+    max-width: 34rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__title {
+    margin: 0 0 $space-8;
+    // Floor must not drop below the theme's fluid h1, or the headline shrinks
+    // toward the 18px body copy on mobile.
+    font-size: clamp(2.25rem, 4vw, 2.75rem);
+    text-wrap: balance;
+  }
+
+  &__text {
+    margin: 0 auto $space-12;
+    max-width: 30rem;
+
+    color: var(--wp--preset--color--hall);
+
+    p {
+      margin: 0;
+      line-height: 1.5;
+
+      // Splits a sentence that has to wrap into even lines instead of leaving
+      // one word orphaned. Ignored where the sentence already fits.
+      text-wrap: balance;
+    }
+
+    p + p {
+      margin-top: $space-1;
+    }
+  }
+
+  &__search {
+    margin-bottom: $space-6;
+    text-align: start;
+
+    // Trims the shared search-page form, which is taller than this hero wants.
+    .search-form {
+      padding: $space-1 $space-2;
+    }
+  }
+
+  &__links ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: $space-2 $space-6;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+  }
+
+  &__links li + li {
+    position: relative;
+
+    // Centred on the midpoint of the column gap, so it stays put if the gap
+    // changes.
+    &::before {
+      content: '·';
+
+      position: absolute;
+      left: -#{$space-3};
+      top: 50%;
+      transform: translate(-50%, -50%);
+
+      font-size: 2rem;
+      line-height: 1;
+      color: rgba(79, 74, 62, 0.45);
+    }
+  }
+
+  &__links a {
+    color: var(--wp--preset--color--hall);
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+
+  @include mq('<=tablet') {
+    padding: $space-12 0;
+  }
+}
