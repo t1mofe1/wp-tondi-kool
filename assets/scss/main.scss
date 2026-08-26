@@ -11,9 +11,16 @@ body {
   background-color: #fffaf1;
 }
 
+html {
+  // Reserve the scrollbar track so locking the page cannot shift layout sideways
+  scrollbar-gutter: stable;
+}
+
+// Scroll lock for modals and the lightbox.
+// No height here: capping the document at viewport height clamps scrollTop to
+// 0, which throws the page back to the top on open.
 html.lock,
 body.lock {
   overflow: hidden;
-  height: 100%;
   overscroll-behavior: none;
 }
