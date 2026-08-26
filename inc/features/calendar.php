@@ -343,28 +343,101 @@ function tondi_get_upcoming_events(int $limit = 6, int $cache_seconds = 300): ar
 // 5) Display helpers
 // -----------------------------
 /**
+ * Strip the blocks Google Calendar injects into DESCRIPTION by itself.
+ *
+ * Google adds a conferencing section whenever an event carries a video call,
+ * whether or not anyone wrote a description, so without this every such event
+ * renders dial-in boilerplate as its body text. Both shapes are handled: the
+ * delimited "-::~:~::" block older feeds emit, and the bare lines current ones
+ * use. The join URL is dropped rather than surfaced - these are physical school
+ * events, and a public page is no place to hand out a link into the call.
+ *
+ * @param string $text Description with ICS escapes already decoded.
+ * @return string Only what a human actually wrote.
+ */
+function tondi_strip_ics_boilerplate(string $text): string
+{
+    $text = preg_replace('/-::~:~:.*?:~:~::-/s', '', $text) ?? $text;
+
+    $lines = [
+        '/^[ \t]*Join with Google Meet:.*$/mi',
+        '/^[ \t]*This event has a video call\.?[ \t]*$/mi',
+        '/^[ \t]*Join:[ \t]*https?:\/\/meet\.google\.com\S*[ \t]*$/mi',
+        '/^[ \t]*Or dial:.*$/mi',
+        '/^[ \t]*More phone numbers:.*$/mi',
+        '/^[ \t]*Learn more about Meet at:.*$/mi',
+        '/^[ \t]*View your event at[ \t]*https?:\/\/\S+[ \t]*$/mi',
+    ];
+
+    $text = preg_replace($lines, '', $text) ?? $text;
+
+    return trim($text);
+}
+
+/**
+ * Tags kept from a feed's rich-text description.
+ *
+ * Google's editor emits h1 for what is visually a small heading, so headings
+ * are not on the list: wp_kses() drops the tag and keeps the words.
+ *
+ * @return array<string, array<string, bool>> Allowlist in wp_kses() shape.
+ */
+function tondi_event_description_tags(): array
+{
+    return [
+        'a' => ['href' => true, 'title' => true, 'target' => true, 'rel' => true],
+        'b' => [],
+        'strong' => [],
+        'i' => [],
+        'em' => [],
+        'u' => [],
+        'br' => [],
+        'p' => [],
+        'ul' => [],
+        'ol' => [],
+        'li' => [],
+    ];
+}
+
+/**
  * Turn a raw ICS description into safe rich text.
  *
- * Google Calendar feeds mix plain text with fragments of HTML (mostly <br> and
- * <a>), so tags are flattened to newlines first and only then re-escaped.
+ * Descriptions written in Google Calendar arrive as markup, so a safe subset of
+ * it is kept - flattening the tags would lose every list and emphasis. Plain
+ * text descriptions take the other branch and get paragraphs and links.
  *
  * @param string $description Raw DESCRIPTION value.
- * @return string Escaped HTML with paragraphs and clickable links.
+ * @return string HTML safe to print, or an empty string when nothing is left.
  */
 function tondi_format_event_description(string $description): string
 {
-    $description = trim($description);
+    $description = tondi_strip_ics_boilerplate($description);
 
     if ($description === '') {
         return '';
     }
 
-    $description = preg_replace('#<br\s*/?>#i', "\n", $description) ?? $description;
-    $description = preg_replace('#</(p|div|li)>#i', "\n", $description) ?? $description;
-    $description = wp_strip_all_tags($description);
-    $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    if (!preg_match('#<[a-z][a-z0-9]*\b[^>]*>#i', $description)) {
+        return make_clickable(wpautop(esc_html($description)));
+    }
 
-    return make_clickable(wpautop(esc_html(trim($description))));
+    $html = wp_kses($description, tondi_event_description_tags());
+
+    // Google pads descriptions with empty <p><br></p> and <h1><br></h1> rows
+    $html = preg_replace('#<(p|li)\b[^>]*>(?:\s|&nbsp;|\x{00a0}|<br\s*/?>)*</\1>#iu', '', $html) ?? $html;
+    $html = preg_replace('#(?:<br\s*/?>\s*){2,}#i', '<br />', $html) ?? $html;
+    $html = trim($html);
+
+    if ($html === '') {
+        return '';
+    }
+
+    // Inline-only markup still needs paragraphs around it
+    if (!preg_match('#<(p|ul|ol)\b#i', $html)) {
+        $html = wpautop($html);
+    }
+
+    return $html;
 }
 
 /**
@@ -376,11 +449,12 @@ function tondi_format_event_description(string $description): string
  */
 function tondi_event_description_excerpt(string $description, int $words = 14): string
 {
-    $description = wp_strip_all_tags(
-        preg_replace('#<br\s*/?>#i', ' ', $description) ?? $description
-    );
+    $description = tondi_strip_ics_boilerplate($description);
 
+    $description = preg_replace('#<br\s*/?>|</(p|div|li|h[1-6])>#i', ' ', $description) ?? $description;
+    $description = wp_strip_all_tags($description);
     $description = html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $description = str_replace("\u{00a0}", ' ', $description);
     $description = trim(preg_replace('/\s+/u', ' ', $description) ?? $description);
 
     if ($description === '') {

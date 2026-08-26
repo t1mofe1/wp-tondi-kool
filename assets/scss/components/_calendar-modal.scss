@@ -144,6 +144,22 @@
     }
   }
 
+  ul,
+  ol {
+    margin: 0 0 $space-3;
+    padding-inline-start: $space-6;
+  }
+
+  li {
+    margin-bottom: $space-1;
+    line-height: 1.5;
+  }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
+
   a {
     color: var(--wp--preset--color--tumehall);
     text-decoration: underline;
