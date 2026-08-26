@@ -95,6 +95,7 @@ function tondi_ics_unescape_text(string $value): string
  * - LOCATION
  * - DESCRIPTION
  * - URL
+ * - STATUS (cancelled events are dropped)
  *
  * Returns array of events:
  * [
@@ -150,6 +151,7 @@ function tondi_parse_ics_events(string $ics, ?DateTimeZone $tz = null): array
             $description = tondi_ics_unescape_text((string) ($current['DESCRIPTION'] ?? ''));
             $url = tondi_ics_unescape_text((string) ($current['URL'] ?? ''));
             $uid = tondi_ics_unescape_text((string) ($current['UID'] ?? ''));
+            $status = strtoupper(trim((string) ($current['STATUS'] ?? '')));
 
             $start = isset($current['DTSTART']) ? tondi_ics_parse_dt($current['DTSTART'], $tz) : null;
             $end = isset($current['DTEND']) ? tondi_ics_parse_dt($current['DTEND'], $tz) : null;
@@ -159,7 +161,11 @@ function tondi_parse_ics_events(string $ics, ?DateTimeZone $tz = null): array
                 $all_day = true;
             }
 
-            if ($start instanceof DateTimeImmutable && $summary !== '') {
+            // A cancelled event stays in the feed; showing it would announce
+            // something the school has called off
+            $cancelled = $status === 'CANCELLED';
+
+            if (!$cancelled && $start instanceof DateTimeImmutable && $summary !== '') {
                 $events[] = [
                     'start' => $start,
                     'end' => $end instanceof DateTimeImmutable ? $end : null,
@@ -198,7 +204,7 @@ function tondi_parse_ics_events(string $ics, ?DateTimeZone $tz = null): array
         if (in_array($key, ['DTSTART', 'DTEND'], true)) {
             // Keep full raw line so we can parse TZID / VALUE params later
             $current[$key] = $left . ':' . $value;
-        } else if (in_array($key, ['SUMMARY', 'LOCATION', 'DESCRIPTION', 'URL', 'UID'], true)) {
+        } else if (in_array($key, ['SUMMARY', 'LOCATION', 'DESCRIPTION', 'URL', 'UID', 'STATUS'], true)) {
             // Keep only the value part (prevents "SUMMARY:" showing in UI)
             $current[$key] = trim($value);
         }
