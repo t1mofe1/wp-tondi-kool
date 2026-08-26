@@ -1,3 +1,5 @@
+import { lockScroll, unlockScroll } from './scroll-lock.js';
+
 /**
  * Gallery Lightbox with:
  * - arrows + keyboard
@@ -51,7 +53,11 @@ export function initGalleryLightbox() {
   let isPointerDown = false;
 
   function lockBody(lock) {
-    document.body.classList.toggle('lock', !!lock);
+    if (lock) {
+      lockScroll();
+    } else {
+      unlockScroll();
+    }
   }
 
   function preventGesture(e) {

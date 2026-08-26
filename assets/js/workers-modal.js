@@ -1,3 +1,5 @@
+import { lockScroll, unlockScroll } from './scroll-lock.js';
+
 export function initWorkersModal() {
   const modal = document.getElementById('worker-modal');
   if (!modal) return;
@@ -48,8 +50,7 @@ export function initWorkersModal() {
     modal.setAttribute('aria-hidden', 'false');
     if (backdrop) backdrop.setAttribute('aria-hidden', 'false');
 
-    document.documentElement.classList.add('lock');
-    document.body.classList.add('lock');
+    lockScroll();
 
     closeBtn?.focus?.();
   }
@@ -65,8 +66,7 @@ export function initWorkersModal() {
     modal.setAttribute('aria-hidden', 'true');
     if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
 
-    document.documentElement.classList.remove('lock');
-    document.body.classList.remove('lock');
+    unlockScroll();
 
     setWorkerInUrl(null);
 

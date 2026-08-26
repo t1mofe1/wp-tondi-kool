@@ -16,11 +16,18 @@ html {
   scrollbar-gutter: stable;
 }
 
-// Scroll lock for modals and the lightbox.
-// No height here: capping the document at viewport height clamps scrollTop to
-// 0, which throws the page back to the top on open.
-html.lock,
+// Scroll lock for modals, the lightbox and the mobile menu.
+// iOS Safari keeps scrolling a document set to overflow: hidden, so the body is
+// pinned instead; scroll-lock.js carries the offset in its inline top. No width
+// here, so the body's own margin resolves the same locked and unlocked.
+html.lock {
+  overflow: hidden;
+}
+
 body.lock {
+  position: fixed;
+  inset-inline: 0;
+
   overflow: hidden;
   overscroll-behavior: none;
 }

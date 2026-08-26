@@ -227,7 +227,12 @@ $is_front = is_front_page() || is_home();
             btn.setAttribute('aria-expanded', String(isOpen));
             btn.querySelector('.nav-toggle__label').textContent = isOpen ? '✕ Sulge' : '☰ Menüü';
 
-            document.body.classList.toggle('lock', isOpen);
+            if (isOpen) {
+                // Menu opens below the header, so the header has to be on screen
+                window.TondiScrollLock?.lock({ toTop: true });
+            } else {
+                window.TondiScrollLock?.unlock();
+            }
         });
     });
 

@@ -1,3 +1,5 @@
+import { lockScroll, unlockScroll } from './scroll-lock.js';
+
 const FOCUSABLE =
   'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
@@ -25,8 +27,7 @@ export function initCalendarModal() {
     modal.setAttribute('aria-hidden', 'false');
     backdrop?.setAttribute('aria-hidden', 'false');
 
-    document.documentElement.classList.add('lock');
-    document.body.classList.add('lock');
+    lockScroll();
 
     closeBtn?.focus?.({ preventScroll: true });
   }
@@ -37,8 +38,7 @@ export function initCalendarModal() {
     modal.setAttribute('aria-hidden', 'true');
     backdrop?.setAttribute('aria-hidden', 'true');
 
-    document.documentElement.classList.remove('lock');
-    document.body.classList.remove('lock');
+    unlockScroll();
 
     contentEl?.replaceChildren();
 
