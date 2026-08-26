@@ -972,6 +972,10 @@ function tondi_format_event_description(string $description): string
     // Google pads descriptions with empty <p><br></p> and <h1><br></h1> rows
     $html = preg_replace('#<(p|li)\b[^>]*>(?:\s|&nbsp;|\x{00a0}|<br\s*/?>)*</\1>#iu', '', $html) ?? $html;
     $html = preg_replace('#(?:<br\s*/?>\s*){2,}#i', '<br />', $html) ?? $html;
+
+    // A stripped <h1><br></h1> leaves its <br> behind, which reads as a blank
+    // line at the end of the description
+    $html = preg_replace('#^(?:\s*<br\s*/?>)+|(?:<br\s*/?>\s*)+$#i', '', $html) ?? $html;
     $html = trim($html);
 
     if ($html === '') {
