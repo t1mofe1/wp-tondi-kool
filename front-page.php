@@ -89,7 +89,7 @@ get_header();
     <div class="container">
         <section class="home-calendar-gallery">
             <?php
-            $events = tondi_get_upcoming_events(5, 5);
+            $events = tondi_get_upcoming_events(5, 900);
             ?>
 
             <section class="home-calendar">
@@ -418,7 +418,7 @@ get_header();
                 modal.setAttribute('aria-hidden', 'false');
                 modal.classList.add('is-open');
 
-                document.body.classList.add('lock');
+                window.TondiScrollLock?.lock();
 
                 const input = modal.querySelector('input[type="search"]');
                 setTimeout(() => input?.focus(), 50);
@@ -428,7 +428,7 @@ get_header();
                 modal.setAttribute('aria-hidden', 'true');
                 modal.classList.remove('is-open');
 
-                document.body.classList.remove('lock');
+                window.TondiScrollLock?.unlock();
             }
         });
 
@@ -442,7 +442,7 @@ get_header();
                     modal.setAttribute('aria-hidden', 'true');
                     modal.classList.remove('is-open');
 
-                    document.body.classList.remove('lock');
+                    window.TondiScrollLock?.unlock();
                 }
             }
         });
