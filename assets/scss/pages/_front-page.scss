@@ -333,12 +333,13 @@
     &__list {
       display: flex;
       flex-direction: column;
+      gap: $space-2;
 
-      width: 300px;
+      width: 320px;
       height: max-content;
 
       margin: 0;
-      padding: $space-8 $space-6;
+      padding: $space-4 $space-3;
       border-radius: 12px;
 
       background-color: #ede6dd;
@@ -350,67 +351,148 @@
     }
 
     &__item {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: column;
-      gap: $space-6;
+      position: relative;
 
-      .home-calendar__info {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 14px;
+      align-items: start;
+      gap: 0 $space-3;
+
+      padding: $space-3;
+      border-radius: 14px;
+
+      background-color: rgba(255, 255, 255, 0.45);
+
+      transition:
+        background-color 0.15s ease,
+        transform 0.1s ease,
+        box-shadow 0.15s ease;
+
+      &:hover,
+      &:has(.home-calendar__trigger:focus-visible) {
+        background-color: rgba(255, 255, 255, 0.85);
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+
+        .home-calendar__chevron {
+          opacity: 1;
+          transform: translateX(2px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &:hover,
+        &:has(.home-calendar__trigger:focus-visible) {
+          transform: none;
+        }
+      }
+
+      // Stretched trigger: keeps the heading semantics outside the button
+      .home-calendar__trigger {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+
+        width: 100%;
+        padding: 0;
+
+        border: none;
+        border-radius: inherit;
+        background-color: transparent;
+        cursor: pointer;
+
+        &:focus-visible {
+          @include focus-ring;
+        }
+      }
+
+      .home-calendar__badge {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        gap: $space-2;
+        align-items: center;
+        justify-content: center;
+
+        padding-block: $space-1;
+        border-radius: 10px;
+
+        background-color: var(--wp--preset--color--meresinine);
+        color: var(--wp--preset--color--tumehall);
+      }
+
+      .home-calendar__badge-day {
+        font-size: 1.3rem;
+        font-weight: bold;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .home-calendar__badge--span .home-calendar__badge-day {
+        font-size: 0.95rem;
+        letter-spacing: -0.02em;
+      }
+
+      .home-calendar__badge-month {
+        font-size: 0.65rem;
+        font-weight: 600;
+        line-height: 1.3;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .home-calendar__body {
+        min-width: 0;
         text-align: start;
-
         overflow-wrap: break-word;
+      }
 
-        .home-calendar__name,
-        .home-calendar__place {
-          line-height: 1;
-          font-size: 1.15rem;
-          margin: 0;
-        }
+      .home-calendar__name {
+        margin: 0;
 
-        .home-calendar__name {
-          font-weight: bold;
-        }
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.2;
       }
 
       .home-calendar__meta {
-        display: flex;
-        // justify-content: space-between;
-        align-items: flex-end;
-        gap: $space-2;
+        margin: 2px 0 0;
 
-        .home-calendar__date-group,
-        .home-calendar__time-group {
-          display: flex;
-          align-items: baseline;
-          gap: 2px;
-          white-space: nowrap;
-        }
+        color: var(--wp--preset--color--hall);
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.3;
+        font-variant-numeric: tabular-nums;
 
-        .home-calendar__date,
-        .home-calendar__time,
-        .home-calendar__dash {
-          font-size: 1.15rem;
-          line-height: 1.15;
-        }
-
-        .home-calendar__date {
-          font-weight: bold;
-        }
-
-        .home-calendar__dash {
-          opacity: 0.7;
+        time + .home-calendar__place::before {
+          content: '· ';
         }
       }
-    }
 
-    &__separator {
-      height: 1px;
-      background-color: var(--wp--preset--color--hall);
-      margin: $space-6 $space-4;
+      .home-calendar__excerpt {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+
+        margin: $space-1 0 0;
+
+        color: var(--wp--preset--color--hall);
+        font-size: 0.85rem;
+        line-height: 1.35;
+      }
+
+      .home-calendar__chevron {
+        display: inline-flex;
+        align-self: center;
+
+        color: var(--wp--preset--color--hall);
+        opacity: 0.45;
+
+        transition:
+          opacity 0.15s ease,
+          transform 0.15s ease;
+      }
     }
 
     &__empty {

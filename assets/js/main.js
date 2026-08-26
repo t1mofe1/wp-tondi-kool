@@ -6,10 +6,12 @@ import { initWorkersModal } from './workers-modal.js';
 import { initGalleryLightbox } from './lightbox-gallery.js';
 import { initLiveSearch } from './live-search.js';
 import { initSidebarAccordion } from './sidebar-accordion.js';
+import { initCalendarModal } from './calendar-modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initWorkersModal();
   initGalleryLightbox();
   initLiveSearch();
   initSidebarAccordion();
+  initCalendarModal();
 });

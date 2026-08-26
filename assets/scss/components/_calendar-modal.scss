@@ -1,0 +1,174 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+/* =========================================================
+   Calendar event modal
+   Requires markup:
+   .calendar-modal__backdrop
+   .calendar-modal
+     button.calendar-modal__close
+     .calendar-modal__content
+       .calendar-modal__body (cloned from a <template>)
+   ========================================================= */
+
+.calendar-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  background-color: rgba(79, 74, 62, 0.65);
+  backdrop-filter: blur(2px);
+
+  &[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+.calendar-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: 1001;
+
+  width: min(640px, calc(100vw - #{$space-8}));
+  max-height: min(80vh, 720px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  padding: $space-8 $space-6 $space-6;
+  border-radius: 16px;
+
+  background-color: var(--wp--preset--color--liivakarva);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.35);
+
+  &[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+.calendar-modal__close {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 2rem;
+  height: 2rem;
+
+  border: none;
+  border-radius: 50%;
+
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+
+  background-color: transparent;
+  color: var(--wp--preset--color--tumehall);
+
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: rgba(79, 74, 62, 0.1);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.calendar-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.calendar-modal__eyebrow {
+  margin: 0;
+
+  color: var(--wp--preset--color--hall);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.calendar-modal__title {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.calendar-modal__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: $space-3 $space-4;
+
+  margin: 0;
+  padding: $space-4;
+  border-radius: 12px;
+
+  background-color: #ede6dd;
+
+  dt {
+    margin: 0 0 2px;
+
+    color: var(--wp--preset--color--hall);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+}
+
+.calendar-modal__description {
+  // Caps the reading measure at ~65 characters; the panel is wider than that
+  max-width: 62ch;
+  overflow-wrap: break-word;
+
+  p {
+    margin: 0 0 $space-3;
+    line-height: 1.55;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: var(--wp--preset--color--tumehall);
+    text-decoration: underline;
+  }
+}
+
+.calendar-modal__link {
+  align-self: flex-start;
+
+  padding: $space-2 $space-4;
+  border-radius: 999px;
+
+  background-color: var(--wp--preset--color--meresinine);
+  color: var(--wp--preset--color--tumehall);
+
+  font-weight: 700;
+  text-decoration: none;
+
+  transition: filter 150ms ease;
+
+  &:hover {
+    filter: brightness(0.94);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

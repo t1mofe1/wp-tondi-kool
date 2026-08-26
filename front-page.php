@@ -99,105 +99,82 @@ get_header();
 
                 <?php if (!empty($events)) : ?>
                     <ol class="home-calendar__list">
-                        <?php foreach ($events as $index => $event) : ?>
+                        <?php foreach ($events as $event) : ?>
                             <?php
 
-                            /** @var DateTimeImmutable $start */
-                            $start = $event['start'] ?? null;
-                            /** @var DateTimeImmutable|null $end */
-                            $end = $event['end'] ?? null;
+                            $item = tondi_prepare_event_display($event);
 
-                            if (!$start instanceof DateTimeImmutable) {
+                            if (!$item) {
                                 continue;
                             }
-
-                            $tz = new DateTimeZone('Europe/Tallinn');
-                            $start = $start->setTimezone($tz);
-                            if ($end instanceof DateTimeImmutable) {
-                                $end = $end->setTimezone($tz);
-                            }
-
-                            $is_all_day = !empty($event['all_day']);
-
-                            // For all-day events, DTEND is typically exclusive -> show end - 1 day
-                            $endDisplay = null;
-                            if ($end instanceof DateTimeImmutable) {
-                                $endDisplay = $is_all_day ? $end->modify('-1 day') : $end;
-                            }
-
-                            $start_date_attr = $start->format('Y-m-d');
-                            $start_date_text = $start->format('d.m');
-                            $start_time_attr = $start->format('H:i');
-                            $start_time_text = $start->format('H:i');
-
-                            $end_date_attr = $endDisplay ? $endDisplay->format('Y-m-d') : '';
-                            $end_date_text = $endDisplay ? $endDisplay->format('d.m') : '';
-                            $end_time_attr = $endDisplay ? $endDisplay->format('H:i') : '';
-                            $end_time_text = $endDisplay ? $endDisplay->format('H:i') : '';
-
-                            $same_day = $endDisplay ? ($start->format('Y-m-d') === $endDisplay->format('Y-m-d')) : true;
-
-                            $name = $event['summary'] ?? '';
-                            $place = $event['location'] ?? '';
 
                             ?>
 
                             <li class="home-calendar__item">
-                                <div class="home-calendar__info">
+                                <button
+                                    type="button"
+                                    class="home-calendar__trigger"
+                                    data-calendar-event="<?php echo esc_attr($item['id']); ?>"
+                                    aria-haspopup="dialog">
+                                    <span class="screen-reader-text">
+                                        <?php
+                                        printf(
+                                            /* translators: %s: event name */
+                                            esc_html__('Vaata sündmust: %s', 'tondi'),
+                                            esc_html($item['name'])
+                                        );
+                                        ?>
+                                    </span>
+                                </button>
+
+                                <div class="home-calendar__badge <?php echo $item['badge_is_span'] ? 'home-calendar__badge--span' : ''; ?>" aria-hidden="true">
+                                    <span class="home-calendar__badge-day">
+                                        <?php echo esc_html($item['badge_day']); ?>
+                                    </span>
+                                    <span class="home-calendar__badge-month">
+                                        <?php echo esc_html($item['month_short']); ?>
+                                    </span>
+                                </div>
+
+                                <div class="home-calendar__body">
                                     <h3 class="home-calendar__name">
-                                        <?php echo esc_html($name); ?>
+                                        <?php echo esc_html($item['name']); ?>
                                     </h3>
 
-                                    <?php if ($place): ?>
-                                        <p class="home-calendar__place">
-                                            <?php echo esc_html($place); ?>
+                                    <p class="home-calendar__meta">
+                                        <?php if ($item['meta_when']): ?>
+                                            <time datetime="<?php echo esc_attr($item['start_date_attr']); ?>">
+                                                <?php echo esc_html($item['meta_when']); ?>
+                                            </time>
+                                        <?php endif; ?>
+
+                                        <?php if ($item['place']): ?>
+                                            <span class="home-calendar__place">
+                                                <?php echo esc_html($item['place']); ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </p>
+
+                                    <?php if ($item['description_excerpt']): ?>
+                                        <p class="home-calendar__excerpt">
+                                            <?php echo esc_html($item['description_excerpt']); ?>
                                         </p>
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="home-calendar__meta">
-                                    <!-- DATE GROUP -->
-                                    <div class="home-calendar__date-group">
-                                        <time class="home-calendar__date" datetime="<?php echo esc_attr($start_date_attr); ?>">
-                                            <?php echo esc_html($start_date_text); ?>
-                                        </time>
+                                <span class="home-calendar__chevron" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                                        <path d="M9 6l6 6-6 6" />
+                                    </svg>
+                                </span>
 
-                                        <?php if ($endDisplay && !$same_day): ?>
-                                            <span class="home-calendar__dash" aria-hidden="true">–</span>
-                                            <time class="home-calendar__date" datetime="<?php echo esc_attr($end_date_attr); ?>">
-                                                <?php echo esc_html($end_date_text); ?>
-                                            </time>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <?php if (!$is_all_day): ?>
-                                        <!-- TIME GROUP -->
-                                        <div class="home-calendar__time-group">
-                                            <time class="home-calendar__time" datetime="<?php echo esc_attr($start_time_attr); ?>">
-                                                <?php echo esc_html($start_time_text); ?>
-                                            </time>
-
-                                            <?php if ($endDisplay): ?>
-                                                <span class="home-calendar__dash" aria-hidden="true">–</span>
-                                                <time class="home-calendar__time" datetime="<?php echo esc_attr($end_time_attr); ?>">
-                                                    <?php echo esc_html($end_time_text); ?>
-                                                </time>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
+                                <template data-calendar-event-body="<?php echo esc_attr($item['id']); ?>">
+                                    <?php get_template_part('template-parts/calendar/event-details', null, ['event' => $item]); ?>
+                                </template>
                             </li>
-
-                            <?php if ($index < count($events) - 1) : ?>
-                                <hr class="home-calendar__separator" />
-                            <?php endif; ?>
                         <?php endforeach; ?>
                     </ol>
 
-                    <!-- <a class="home-events__more_btn" href="#"> -->
-                    <?php // esc_html_e('Vaata kõiki sündmusi', 'tondi');
-                    ?>
-                    <!-- </a> -->
                 <?php else : ?>
                     <div class="home-calendar__empty">
                         <strong><?php esc_html_e('Sündmused on tulekul!', 'tondi'); ?></strong>
@@ -388,6 +365,25 @@ get_header();
     <!-- Decorative border -->
     <div class="home-border-three" aria-hidden="true"></div>
 </main>
+
+<div class="calendar-modal__backdrop" id="calendar-modal-backdrop" aria-hidden="true"></div>
+<div
+    class="calendar-modal"
+    id="calendar-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="calendar-modal-title">
+    <button
+        type="button"
+        class="calendar-modal__close"
+        data-calendar-modal-close
+        aria-label="<?php esc_attr_e('Sulge', 'tondi'); ?>">
+        &times;
+    </button>
+
+    <div class="calendar-modal__content" id="calendar-modal-content"></div>
+</div>
 
 <div id="site-search-modal" class="site-search-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="site-search-modal__backdrop" data-search-close></div>
