@@ -145,8 +145,8 @@ acf_add_local_field_group([
             'label' => __('Galerii kaust', 'tondi'),
             'name' => 'front_page_gallery_folder',
             'type' => 'select',
-            'instructions' => __('Vali kaust, kust laadida pildid esilehele.', 'tondi'),
-            'choices' => tondi_filebird_folder_choices_indented() ?: ['' => __('Kauste ei leitud', 'tondi')],
+            'instructions' => __('Vali kaust, kust laadida pildid esilehele. Album saab lisaks lingi otse albumile.', 'tondi'),
+            'choices' => [],
             'allow_null' => 1,
             'ui' => 1,
             'return_format' => 'value', // we store folder ID (int-like)
@@ -222,6 +222,80 @@ acf_add_local_field_group([
 ]);
 
 #endregion Front Page
+
+#region Gallery page
+
+$galleryMenuSlug = 'tondi-gallery-settings';
+acf_add_options_sub_page([
+    'page_title' => __('Galerii', 'tondi'),
+    'menu_title' => __('Galerii', 'tondi'),
+    'parent_slug' => $siteSettingsMenuSlug,
+    'menu_slug' => $galleryMenuSlug,
+]);
+
+// Albums shown on the Galerii page template
+acf_add_local_field_group([
+    'key' => 'group_tondi_gallery_albums',
+    'title' => 'Galerii albumid',
+    'fields' => [
+        [
+            'key' => 'field_gallery_albums',
+            'label' => __('Albumid', 'tondi'),
+            'name' => 'gallery_albums',
+            'type' => 'repeater',
+            'instructions' => __('Iga rida on üks album galerii lehel. Järjekord siin määrab järjekorra lehel.', 'tondi'),
+            'min' => 0,
+            'layout' => 'block',
+            'button_label' => __('Lisa album', 'tondi'),
+            'sub_fields' => [
+                [
+                    'key' => 'field_gallery_album_folder',
+                    'label' => __('Kaust', 'tondi'),
+                    'name' => 'album_folder',
+                    'type' => 'select',
+                    'instructions' => __('Meediakaust, kust album pildid võtab.', 'tondi'),
+                    'required' => 1,
+                    'choices' => [],
+                    'allow_null' => 1,
+                    'ui' => 1,
+                    'return_format' => 'value',
+                    'wrapper' => ['width' => '40'],
+                ],
+                [
+                    'key' => 'field_gallery_album_title',
+                    'label' => __('Pealkiri', 'tondi'),
+                    'name' => 'album_title',
+                    'type' => 'text',
+                    'instructions' => __('Jäta tühjaks, siis kasutatakse kausta nime.', 'tondi'),
+                    'wrapper' => ['width' => '35'],
+                ],
+                [
+                    'key' => 'field_gallery_album_cover',
+                    'label' => __('Kaanepilt', 'tondi'),
+                    'name' => 'album_cover',
+                    'type' => 'image',
+                    'instructions' => __('Jäta tühjaks, siis kasutatakse kausta uusimat pilti.', 'tondi'),
+                    'return_format' => 'id',
+                    'preview_size' => 'medium',
+                    'mime_types' => 'jpg,jpeg,png,webp,gif',
+                    'wrapper' => ['width' => '25'],
+                ],
+            ],
+        ],
+    ],
+    'location' => [
+        [
+            [
+                'param' => 'options_page',
+                'operator' => '==',
+                'value' => $galleryMenuSlug,
+            ],
+        ],
+    ],
+    'active' => true,
+]);
+
+#endregion Gallery page
 
 #region Footer page
 

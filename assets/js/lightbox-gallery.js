@@ -42,6 +42,11 @@ export function initGalleryLightbox() {
   // Safety checks
   if (!stage || !activeImg || !closeBtn || !backdrop || !captionEl) return;
 
+  // Opt-out for galleries whose visible set changes per request, where a ?photo=
+  // link would resolve to nothing. The history entry is still pushed, so Back
+  // keeps closing the lightbox instead of leaving the page.
+  const deepLink = overlay.dataset.deepLink !== 'false';
+
   let lastFocused = null;
   let index = 0;
   let isOpen = false;
@@ -92,7 +97,7 @@ export function initGalleryLightbox() {
   function setUrlPhoto(id, mode = 'replace') {
     const url = new URL(window.location.href);
 
-    if (id) url.searchParams.set('photo', String(id));
+    if (id && deepLink) url.searchParams.set('photo', String(id));
     else url.searchParams.delete('photo');
 
     const qs = url.searchParams.toString();
@@ -408,7 +413,7 @@ export function initGalleryLightbox() {
   });
 
   // Auto-open if URL has ?photo=ID on load
-  const initialId = readUrlPhoto();
+  const initialId = deepLink ? readUrlPhoto() : null;
   if (initialId) {
     const i = findIndexById(initialId);
     if (i !== -1) openAt(i, null, { pushUrl: false });

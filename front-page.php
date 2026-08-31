@@ -203,12 +203,7 @@ get_header();
                     $max_slots = 6;
                 }
 
-                $attachment_ids = [];
-
-                if ($folder_id > 0 && class_exists(\FileBird\Classes\Helpers::class)) {
-                    $attachment_ids = (array) \FileBird\Classes\Helpers::getAttachmentIdsByFolderId($folder_id);
-                    $attachment_ids = array_values(array_filter(array_map('intval', $attachment_ids)));
-                }
+                $attachment_ids = tondi_get_folder_attachment_ids($folder_id);
 
                 // Randomize and shuffle
                 if ($attachment_ids) {
@@ -265,38 +260,23 @@ get_header();
                     <?php endfor; ?>
                 </div>
 
-                <?php $gallery_page = get_page_by_path('galerii'); ?>
-                <?php if ($gallery_page): ?>
-                    <a
-                        class="more_button"
-                        href="<?php echo esc_url($gallery_page ? get_permalink($gallery_page) : home_url('/')); ?>">
+                <?php
+
+                $gallery_page_id = tondi_gallery_page_id();
+
+                $more_url = tondi_gallery_folder_has_album($folder_id)
+                    ? tondi_gallery_album_url($folder_id, 1, $gallery_page_id)
+                    : ($gallery_page_id > 0 ? (string) get_permalink($gallery_page_id) : '');
+
+                ?>
+
+                <?php if ($more_url !== ''): ?>
+                    <a class="more_button" href="<?php echo esc_url($more_url); ?>">
                         <?php esc_html_e('Vaata rohkem', 'tondi'); ?>
                     </a>
                 <?php endif; ?>
 
-                <!-- Lightbox overlay -->
-                <div class="gallery-lightbox" aria-hidden="true">
-                    <div class="gallery-lightbox__backdrop"></div>
-
-                    <figure class="gallery-lightbox__content" role="dialog" aria-modal="true" aria-label="Pilt suurelt">
-                        <button type="button" class="gallery-lightbox__close" aria-label="Sulge">&times;</button>
-
-                        <button type="button" class="gallery-lightbox__nav gallery-lightbox__prev" aria-label="Eelmine pilt">
-                            &#10094;
-                        </button>
-
-                        <div class="gallery-lightbox__stage">
-                            <img src="" alt="" class="gallery-lightbox__img is-active" />
-                        </div>
-
-                        <button type="button" class="gallery-lightbox__nav gallery-lightbox__next" aria-label="Järgmine pilt">
-                            &#10095;
-                        </button>
-
-                        <figcaption></figcaption>
-                        <div class="gallery-lightbox__counter" aria-live="polite"></div>
-                    </figure>
-                </div>
+                <?php get_template_part('template-parts/gallery/lightbox', null, ['deep_link' => false]); ?>
             </section>
         </section>
     </div>

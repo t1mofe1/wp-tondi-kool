@@ -1,4 +1,105 @@
 @use '../variables' as *;
+@use '../mixins' as *;
+
+.gallery-albums {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: $space-6;
+
+  @include mq('<=phone') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gallery-album-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  text-decoration: none;
+  color: inherit;
+
+  background-color: var(--wp--preset--color--liivakarva);
+
+  transition:
+    translate 0.25s ease-out,
+    box-shadow 0.25s ease-out;
+
+  &:hover,
+  &:focus-visible {
+    translate: 0 -4px;
+    box-shadow: 0 12px 24px -14px rgb(79 74 62 / 45%);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &__cover {
+    display: block;
+    background-color: var(--wp--preset--color--hall);
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      transition: scale 0.25s ease-out;
+    }
+  }
+
+  &:hover &__cover img,
+  &:focus-visible &__cover img {
+    scale: 1.04;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    padding: $space-3 $space-4 $space-4;
+  }
+
+  &__name {
+    font-weight: 700;
+  }
+
+  &__count {
+    font-size: 0.85rem;
+    color: var(--wp--preset--color--hall);
+  }
+}
+
+.gallery-album__back {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--wp--preset--color--hall);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--wp--preset--color--tumehall);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.gallery-album__count {
+  margin-top: $space-2;
+  color: var(--wp--preset--color--hall);
+}
+
+.gallery-notice {
+  margin-bottom: $space-6;
+  color: var(--wp--preset--color--hall);
+}
 
 .gallery-page__grid {
   display: grid;
@@ -17,12 +118,6 @@
     position: relative;
 
     background-color: var(--wp--preset--color--hall);
-
-    translate: 0 16px;
-    scale: 0.98;
-    transition:
-      translate 0.45s ease-out,
-      scale 0.45s ease-out;
 
     img {
       display: block;
